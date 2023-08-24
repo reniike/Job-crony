@@ -9,7 +9,7 @@ public class AppUtils {
     public static final String ROLES_VALUE = "roles" ;
     public static final String EMAIL_VALUE = "email" ;
     public static final String CLAIM_VALUE = "claim";
-    public static final Long EXPIRATION_TIME = 12000L;
+    public static final String TOKEN_PREFIX = "Bearer ";
 
 
 

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.xml.crypto.Data;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,8 @@ public class JwtUtility {
     @Value("${secretKey}")
     private String secretKey;
 
+    @Value("${expirationTime}")
+    private Long expirationTime;
 
     public Map<String, Claim> extractClaimsFrom(String token) throws JWTVerificationException {
         DecodedJWT decodedJwt = validateToken(token);
@@ -38,14 +42,14 @@ public class JwtUtility {
 
     public String extractEmailFrom(String token) throws JWTVerificationException {
         DecodedJWT decodedJwt = validateToken(token);
-        if (decodedJwt.getClaim(EMAIL_VALUE)==null) throw new JWTVerificationException(INVALID_TOKEN);
+        if (decodedJwt.getClaim(EMAIL_VALUE) == null) throw new JWTVerificationException(INVALID_TOKEN);
         return decodedJwt.getClaim(EMAIL_VALUE).asString();
     }
 
     public String generateEncryptedLink(String userEmail) {
         return JWT.create()
                 .withIssuedAt(now())
-                .withExpiresAt(now().plusSeconds(EXPIRATION_TIME))
+                .withExpiresAt(now().plusSeconds(expirationTime))
                 .withClaim(EMAIL_VALUE, userEmail)
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
@@ -53,13 +57,14 @@ public class JwtUtility {
     public String generateAccessToken(Collection<? extends GrantedAuthority> authorities){
         Map<String, String> map = new HashMap<>();
         int count = 1;
-        for (GrantedAuthority authority:authorities) {
+        for (GrantedAuthority authority : authorities) {
             map.put(CLAIM_VALUE + count, authority.getAuthority());
             count++;
         }
+        Date expirationDate = Date.from(now().plusSeconds(expirationTime));
         return JWT.create()
                 .withIssuedAt(now())
-                .withExpiresAt(now().plusSeconds(EXPIRATION_TIME))
+                .withExpiresAt(expirationDate)
                 .withClaim(ROLES_VALUE, map)
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
