@@ -1,7 +1,8 @@
 package com.example.jobcrony.data.models;
 
 public enum Role {
-    JOBSEEKER,
+    JOB_SEEKER,
     EMPLOYER,
-    ADMIN
+    ADMIN,
+    EVENT_ATTENDEES
 }

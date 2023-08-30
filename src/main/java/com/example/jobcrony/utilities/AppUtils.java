@@ -10,6 +10,15 @@ public class AppUtils {
     public static final String EMAIL_VALUE = "email" ;
     public static final String CLAIM_VALUE = "claim";
     public static final String TOKEN_PREFIX = "Bearer ";
+    public static final int INDEX_VALUE = 7;
+    public static final String AUTHORIZATION_VALUE = "Authorization";
+    public static final String AUTHENTICATION_FAILED_FOR_USER_WITH_EMAIL = "Authentication failed for cultifyUser with email %s";
+    public static final String USER_DOES_NOT_EXIST = "User does not exist";
+    public static final String USER_NOT_FOUND = "User not found";
+    public static final String EMPTY_SPACE_VALUE = " ";
+    public static final String ACCESS_TOKEN_VALUE = "access_token" ;
+
+    public static final String USER_WITH_EMAIL_NOT_FOUND = "User with email %s not found";
 
 
 

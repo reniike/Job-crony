@@ -1,24 +1,21 @@
 package com.example.jobcrony.utilities;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
+import com.example.jobcrony.data.models.Role;
+import com.example.jobcrony.data.models.User;
+import com.example.jobcrony.security.JobCronyUserDetails;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.xml.crypto.Data;
+import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.example.jobcrony.utilities.AppUtils.*;
-import static java.time.Instant.now;
-import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.INVALID_TOKEN;
+import java.util.function.Function;
 
 @Component
 public class JwtUtility {
@@ -28,44 +25,56 @@ public class JwtUtility {
     @Value("${expirationTime}")
     private Long expirationTime;
 
-    public Map<String, Claim> extractClaimsFrom(String token) throws JWTVerificationException {
-        DecodedJWT decodedJwt = validateToken(token);
-        if (decodedJwt.getClaim(ROLES_VALUE) == null) throw new JWTVerificationException(INVALID_TOKEN);
-        return decodedJwt.getClaims();
+    public String extractEmailFrom(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    public DecodedJWT validateToken(String token) throws JWTVerificationException {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(secretKey))
-                .build();
-        return verifier.verify(token);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
-    public String extractEmailFrom(String token) throws JWTVerificationException {
-        DecodedJWT decodedJwt = validateToken(token);
-        if (decodedJwt.getClaim(EMAIL_VALUE) == null) throw new JWTVerificationException(INVALID_TOKEN);
-        return decodedJwt.getClaim(EMAIL_VALUE).asString();
+    public String generateToken(User user){
+        JobCronyUserDetails jobCronyUserDetails = new JobCronyUserDetails(user); // Wrap the User object
+        return generateToken(user.getRoles(), jobCronyUserDetails);
     }
 
-    public String generateEncryptedLink(String userEmail) {
-        return JWT.create()
-                .withIssuedAt(now())
-                .withExpiresAt(now().plusSeconds(expirationTime))
-                .withClaim(EMAIL_VALUE, userEmail)
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        final String username = extractEmailFrom(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String generateAccessToken(Collection<? extends GrantedAuthority> authorities){
-        Map<String, String> map = new HashMap<>();
-        int count = 1;
-        for (GrantedAuthority authority : authorities) {
-            map.put(CLAIM_VALUE + count, authority.getAuthority());
-            count++;
-        }
-        Date expirationDate = Date.from(now().plusSeconds(expirationTime));
-        return JWT.create()
-                .withIssuedAt(now())
-                .withExpiresAt(expirationDate)
-                .withClaim(ROLES_VALUE, map)
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
+    private boolean isTokenExpired(String token) {
+        return extractExpirationFrom(token).before(new Date());
+    }
+
+    private Date extractExpirationFrom(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String generateToken(Collection<Role> roles, JobCronyUserDetails jobCronyUserDetails){
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + expirationTime);
+        return Jwts.builder()
+                .claim("roles", roles)
+                .setSubject(jobCronyUserDetails.getUsername())
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(getSignInKey(), SignatureAlgorithm.ES256)
+                .compact();
+    }
+
+
+    private Claims extractAllClaims(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

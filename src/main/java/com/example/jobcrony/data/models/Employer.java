@@ -1,14 +1,15 @@
 package com.example.jobcrony.data.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("EMPLOYER")
 public class Employer extends User{
     @ManyToOne
