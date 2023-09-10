@@ -1,5 +1,7 @@
 package com.example.jobcrony.utilities;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.jobcrony.data.models.Role;
 import com.example.jobcrony.data.models.User;
 import com.example.jobcrony.security.JobCronyUserDetails;
@@ -17,13 +19,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.function.Function;
 
+import static com.example.jobcrony.utilities.AppUtils.EMAIL_VALUE;
+import static java.time.Instant.now;
+
 @Component
 public class JwtUtility {
-    @Value("${secretKey}")
-    private String secretKey;
-
     @Value("${expirationTime}")
     private Long expirationTime;
+
+    @Value("${secretKey}")
+    private String secretKey;
 
     public String extractEmailFrom(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -35,7 +40,7 @@ public class JwtUtility {
     }
 
     public String generateToken(User user){
-        JobCronyUserDetails jobCronyUserDetails = new JobCronyUserDetails(user); // Wrap the User object
+        JobCronyUserDetails jobCronyUserDetails = new JobCronyUserDetails(user);
         return generateToken(user.getRoles(), jobCronyUserDetails);
     }
 
@@ -60,7 +65,7 @@ public class JwtUtility {
                 .setSubject(jobCronyUserDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(getSignInKey(), SignatureAlgorithm.ES256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -74,7 +79,15 @@ public class JwtUtility {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+//        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
+
+    public String generateToken(String email) {
+        return JWT.create()
+                .withIssuedAt(now())
+                .withExpiresAt(now().plusSeconds(expirationTime))
+                .withClaim(EMAIL_VALUE , email)
+                .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
 }

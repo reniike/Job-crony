@@ -32,7 +32,9 @@ public class SecurityConfig{
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
-                .authorizeHttpRequests(c -> c.requestMatchers(POST, "/api/v1/auth/**")
+                .authorizeHttpRequests(c -> c.requestMatchers(POST, "/api/v1/auth/register")
+                        .permitAll())
+                .authorizeHttpRequests(c -> c.requestMatchers(POST, "/api/v1/auth/authenticate")
                         .permitAll())
                 .authorizeHttpRequests(c->c.anyRequest().authenticated())
                 .build();
