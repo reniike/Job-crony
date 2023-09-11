@@ -44,13 +44,7 @@ public class JobSeekerServiceImpl implements JobSeekerService{
         jobSeekerPreRegistration.setToken(token);
         String magicLink = JOBSEEKER_REGISTRATION_PAGE_URL + token;
         String text = String.format(JOBSEEKER_REGISTRATION_MAIL, magicLink, SYSTEM_MAIL);
-        SendMailRequest sendMailRequest = SendMailRequest.builder()
-                .text(text)
-                .subject(MAGIC_LINK)
-                .from(SYSTEM_MAIL)
-                .to(request.getEmailAddress())
-                .build();
-        sendMail(sendMailRequest);
+        sendJobSeekerWelcomeMail(request.getEmailAddress(), text);
         preRegistrationRepository.save(jobSeekerPreRegistration);
         GenericResponse<String> genericResponse = new GenericResponse<>();
         genericResponse.setMessage(EMAIL_SENT_SUCCESSFULLY);
@@ -75,6 +69,16 @@ public class JobSeekerServiceImpl implements JobSeekerService{
                 .message(ACCOUNT_SUCCESSFULLY_CREATED)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
+    }
+
+    private void sendJobSeekerWelcomeMail(String emailAddress, String text) {
+        SendMailRequest sendMailRequest = SendMailRequest.builder()
+                .text(text)
+                .subject(MAGIC_LINK)
+                .from(SYSTEM_MAIL)
+                .to(emailAddress)
+                .build();
+        sendMail(sendMailRequest);
     }
 
     private void sendMail(SendMailRequest sendMailRequest) {

@@ -65,7 +65,7 @@ public class JwtUtility {
                 .setSubject(jobCronyUserDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -79,8 +79,9 @@ public class JwtUtility {
     }
 
     private Key getSignInKey() {
-//        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        byte[] keyBytes = secretKey.getBytes();
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(String email) {

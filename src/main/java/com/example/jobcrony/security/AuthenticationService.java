@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import static com.example.jobcrony.utilities.AppUtils.AUTHENTICATION_FAILED;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -32,7 +34,7 @@ public class AuthenticationService {
             return ResponseEntity.ok().body(GenericResponse.<String>builder().data(jwtToken).build());
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(GenericResponse.<String>builder().message("Authentication failed").build());
+                    .body(GenericResponse.<String>builder().message(AUTHENTICATION_FAILED).build());
         }
     }
 
