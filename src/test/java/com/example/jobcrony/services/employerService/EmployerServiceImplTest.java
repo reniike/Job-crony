@@ -3,6 +3,7 @@ package com.example.jobcrony.services.employerService;
 import com.example.jobcrony.data.repositories.EmployerRepository;
 import com.example.jobcrony.dtos.requests.CompanyRegistrationRequest;
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
+import com.example.jobcrony.dtos.responses.CompanyRegistrationResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.CompanyNotFoundException;
 import com.example.jobcrony.exceptions.LimitExceededException;
@@ -30,19 +31,19 @@ class EmployerServiceImplTest {
 
     @DisplayName("Employer registration test")
     @Test void  employerRegistrationTest() throws CompanyNotFoundException, LimitExceededException {
-//companyRegistrationRequest = CompanyRegistrationRequest.builder()
-//                .companyDescription("")
-//                .companyLogo("")
-//                .companyName("crony")
-//                .contactNumber("090")
-//                .website("")
-//                .industry("tech")
-//                .numberOfEmployees("10-45")
-//                .email("negibis726@gameszox.com")
-//                .location(null)
-//                .build();
-//       ResponseEntity<CompanyRegistrationResponse> companyRegistrationResponse = companyService.registerCompany(companyRegistrationRequest);
-//       assertNotNull(companyRegistrationResponse);
+companyRegistrationRequest = CompanyRegistrationRequest.builder()
+                .companyDescription("")
+                .companyLogo("")
+                .companyName("crony")
+                .contactNumber("090")
+                .website("")
+                .industry("tech")
+                .numberOfEmployees("10-45")
+                .email("negibis726@gameszox.com")
+                .location(null)
+                .build();
+       ResponseEntity<CompanyRegistrationResponse> companyRegistrationResponse = companyService.registerCompany(companyRegistrationRequest);
+       assertNotNull(companyRegistrationResponse);
         registrationRequest = EmployerRegistrationRequest.builder()
                 .company(CompanyRegistrationRequest.builder()
                         .companyCode("c1bbtyI1e972xygnC")
