@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmployerServiceImplTest {
     @Autowired
     private EmployerService employerService;
-    private EmployerRepository employerRepository;
     private EmployerRegistrationRequest registrationRequest;
     private ResponseEntity<GenericResponse<String>> response;
     @Autowired

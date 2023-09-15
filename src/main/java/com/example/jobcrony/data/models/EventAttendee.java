@@ -14,6 +14,8 @@ public class EventAttendee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne
+    private Event event;
     private String firstName;
     private String lastName;
     private String email;

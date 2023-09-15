@@ -3,6 +3,7 @@ package com.example.jobcrony.security;
 import com.example.jobcrony.data.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 public class JobCronyUserDetails implements UserDetails {
+    @Getter
     private final User user;
 
     @Override

@@ -24,20 +24,21 @@ public class AppUtils {
 
     public static final String USER_WITH_EMAIL_NOT_FOUND = "User with email %s not found";
     public static final String JOBSEEKER_REGISTRATION_MAIL =
-            "Hello,\n" +
-                    "\n" +
-                    "Here's your magic link ➡️ %s\n" +
-                    "\n" +
-                    "Just click it, and you'll be taken to a short form to complete your registration. Simple and fast!\n" +
-                    "\n" +
-                    "Keep this link safe; it's unique to you.\n" +
-                    "\n" +
-                    "Need help? Reach out to us at %s.\n" +
-                    "\n" +
-                    "Thanks for choosing us for your job search.\n" +
-                    "\n" +
-                    "Best, " +
-                    "Job Crony\n";
+            """
+                    Hello,
+
+                    Here's your magic link ➡️ %s
+
+                    Just click it, and you'll be taken to a short form to complete your registration. Simple and fast!
+
+                    Keep this link safe; it's unique to you.
+
+                    Need help? Reach out to us at %s.
+
+                    Thanks for choosing us for your job search.
+
+                    Best, Job Crony
+                    """;
     public static final String EMAIL_SENT_SUCCESSFULLY = "Email successfully sent!" ;
     public static final String HTTP_STATUS_OK = "200";
     public static final String VERIFICATION_FAILED = "Verification failed!";
@@ -48,29 +49,33 @@ public class AppUtils {
     public static final int COMPANY_CODE_LENGTH = 17;
     public static final String MAX_NUMBER_OF_EMPLOYERS_REACHED = "Max number of employers for this company reached!";
     public static final String WELCOME_TO_JOB_CRONY = "Welcome to Job Crony";
-    public static final String EMPLOYER_WELCOME_MAIL = "Hello,\n" +
-            "\n" +
-            "Your employer account is ready to go! \n" +
-            "\n" +
-            "Get started right away by posting job listings, finding the best talent, and managing your hiring process hassle-free.\n" +
-            "\n" +
-            "If you have any questions or need help, just drop us a message at %s.\n" +
-            "\n" +
-            "Thanks for choosing us for your hiring needs.\n";
-    public static final String COMPANY_CREATED_WELCOME_MAIL = "Hello,\n" +
-            "\n" +
-            "Great news! Your company account is all set up.\n" +
-            "\n" +
-            "Your unique company code is: %s\n" +
-            "\n" +
-            "Share this code with up to 3 representatives from your company. They can use it during their registration to become employers on our platform.\n" +
-            "\n" +
-            "If you have any questions or need help, please don't hesitate to reach out to us at %s.\n" +
-            "\n" +
-            "Thank you for choosing us for your hiring needs.\n" +
-            "\n" +
-            "Best regards,\n" +
-            "Job Crony\n";
+    public static final String EMPLOYER_WELCOME_MAIL = """
+            Hello,
+
+            Your employer account is ready to go!\s
+
+            Get started right away by posting job listings, finding the best talent, and managing your hiring process hassle-free.
+
+            If you have any questions or need help, just drop us a message at %s.
+
+            Thanks for choosing us for your hiring needs.
+            """;
+    public static final String COMPANY_CREATED_WELCOME_MAIL = """
+            Hello,
+
+            Great news! Your company account is all set up.
+
+            Your unique company code is: %s
+
+            Share this code with up to 3 representatives from your company. They can use it during their registration to become employers on our platform.
+
+            If you have any questions or need help, please don't hesitate to reach out to us at %s.
+
+            Thank you for choosing us for your hiring needs.
+
+            Best regards,
+            Job Crony
+            """;
     public static final String HELLO_THERE = "Hello there, Important Info Inside";
     public static final String COMPANY_REGISTERED_SUCCESSFULLY = "Company Registered successfully!";
     public static final String PASSWORD_PATTERN_MESSAGE = "Password must contain at least one uppercase letter, one lowercase letter, and one digit";
@@ -82,6 +87,24 @@ public class AppUtils {
     public static final String ADMIN_REGISTERED_SUCCESSFULLY = "Admin registered successfully";
     public static final String ADMIN_WITH_EMAIL_EXIST = "Admin with email exist";
     public static final String ADMIN_INVITATION_LINK = "Here's your admin invitation link!";
+    public static final String USER_NOT_AUTHORIZED = "User not Authorized";
+    public static final String EVENT_REGISTERED_SUCCESSFULLY = "Event registered successfully" ;
+    public static final String EVENT_DOESNT_EXIST = "Event doesn't exist" ;
+
+    public static final String EVENT_EMAIL = """
+            Dear %s,
+
+            We're thrilled to have you join us!
+
+            Date: %s
+            %s
+            %s
+
+            Thank you for registering. Get ready for an unforgettable experience filled with knowledge, connections, and fun!
+
+            See you soon!
+
+            Best regards.""";
 
 
     public static List<String> getAuthWhiteList(){
