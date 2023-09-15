@@ -8,6 +8,7 @@ public class AppUtils {
     public static final String MAGIC_LINK = "Your magic link from Job Crony";
     public static final String SYSTEM_MAIL= "aliyahrenike@gmail.com";
     public static final String JOBSEEKER_REGISTRATION_PAGE_URL = "http://localhost:8080/initiateRegistration";
+    public static final String ADMIN_REGISTRATION_URL = "http://localhost:8080/adminRegistration";
     public static final String ERROR_VALUE = "error";
     public static final String ROLES_VALUE = "roles" ;
     public static final String EMAIL_VALUE = "email" ;
@@ -78,6 +79,9 @@ public class AppUtils {
     public static final String INVALID_EMAIL_ADDRESS = "Invalid email address" ;
     public static final String EMAIL_IS_REQUIRED = "Email address is required";
     public static final int THREE = 3;
+    public static final String ADMIN_REGISTERED_SUCCESSFULLY = "Admin registered successfully";
+    public static final String ADMIN_WITH_EMAIL_EXIST = "Admin with email exist";
+    public static final String ADMIN_INVITATION_LINK = "Here's your admin invitation link!";
 
 
     public static List<String> getAuthWhiteList(){
