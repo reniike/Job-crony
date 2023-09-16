@@ -4,7 +4,7 @@ import com.example.jobcrony.data.models.Event;
 import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.data.models.Role;
 import com.example.jobcrony.data.repositories.EventRepository;
-import com.example.jobcrony.dtos.requests.EventRegistrationRequest;
+import com.example.jobcrony.dtos.requests.EventCreationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.EventDoesntExistException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
@@ -27,7 +27,7 @@ public class EventServiceImpl implements EventService{
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity<GenericResponse<String>> createEvent(EventRegistrationRequest request) throws UserNotAuthorizedException {
+    public ResponseEntity<GenericResponse<String>> createEvent(EventCreationRequest request) throws UserNotAuthorizedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
         if (!userDetails.getUser().getRoles().contains(Role.ROLE_EMPLOYER)){

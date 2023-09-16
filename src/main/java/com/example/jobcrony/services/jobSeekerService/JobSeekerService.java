@@ -9,7 +9,6 @@ import com.example.jobcrony.exceptions.VerificationFailedException;
 import org.springframework.http.ResponseEntity;
 
 public interface JobSeekerService {
-//    ResponseEntity<JobSeeker> findByEmail(String email);
     ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest preRegistrationRequest) throws UserAlreadyExistException;
     ResponseEntity<GenericResponse<String>> completeRegistration(JobSeekerRegistrationRequest jobSeekerRegistrationRequest) throws VerificationFailedException;
 }

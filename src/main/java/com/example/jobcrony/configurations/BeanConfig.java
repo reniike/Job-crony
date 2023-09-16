@@ -1,5 +1,6 @@
 package com.example.jobcrony.configurations;
 
+import com.example.jobcrony.data.models.AdminInvitation;
 import com.example.jobcrony.data.repositories.UserRepository;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +73,11 @@ public class BeanConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public AdminInvitation adminInvitation(){
+        return new AdminInvitation();
     }
 
     @Bean
