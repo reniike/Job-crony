@@ -2,13 +2,13 @@ package com.example.jobcrony.dtos.requests;
 
 import com.example.jobcrony.data.models.Location;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CompanyRegistrationRequest {
     @NotBlank
     private String companyName;

@@ -1,16 +1,12 @@
 package com.example.jobcrony.dtos.requests;
 
-import com.example.jobcrony.data.models.Company;
 import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.data.models.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -20,6 +16,7 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class EmployerRegistrationRequest {
     @NotBlank
     private String firstName;

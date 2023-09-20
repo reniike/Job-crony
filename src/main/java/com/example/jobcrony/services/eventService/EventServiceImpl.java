@@ -30,7 +30,7 @@ public class EventServiceImpl implements EventService{
     public ResponseEntity<GenericResponse<String>> createEvent(EventCreationRequest request) throws UserNotAuthorizedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-        if (!userDetails.getUser().getRoles().contains(Role.ROLE_EMPLOYER)){
+        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         }
         Event event = modelMapper.map(request, Event.class);
@@ -40,8 +40,8 @@ public class EventServiceImpl implements EventService{
                 .state(request.getLocation().getState())
                 .postalCode(request.getLocation().getPostalCode())
                 .build();
-        locationService.save(location);
-        event.setLocation(location);
+        Location savedLocation = locationService.save(location);
+        event.setLocation(savedLocation);
         eventRepository.save(event);
 
         GenericResponse<String> genericResponse = GenericResponse.<String>builder()

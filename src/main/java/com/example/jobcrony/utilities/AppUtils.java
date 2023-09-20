@@ -3,12 +3,15 @@ package com.example.jobcrony.utilities;
 import java.util.List;
 
 public class AppUtils {
-    public static final String REGISTRATION_ENDPOINT =  "registration";
-    public static final String LOGIN_ENDPOINT = "login";
-    public static final String MAGIC_LINK = "Your magic link from Job Crony";
+    public static final String LOGIN_ENDPOINT = "/api/v1/login";
+    public static final String MAGIC_LINK = "MAGIC LINK FROM JOB CRONY";
     public static final String SYSTEM_MAIL= "aliyahrenike@gmail.com";
-    public static final String JOBSEEKER_REGISTRATION_PAGE_URL = "http://localhost:8080/initiateRegistration";
-    public static final String ADMIN_REGISTRATION_URL = "http://localhost:8080/adminRegistration";
+    public static final String JOBSEEKER_REGISTRATION_PAGE_URL = "/api/v1/job-seeker/initiateRegistration";
+    public static final String JOBSEEKER_COMPLETE_REGISTRATION_PAGE_URL = "/api/v1/job-seeker/completeRegistration";
+    public static final String ADMIN_REGISTRATION_URL = "/api/v1/admin/register";
+    public static final String ADMIN_SEND_LINK_URL = "/api/v1/admin/sendInvitationLink";
+    public static final String EMPLOYER_REGISTRATION_URL = "/api/v1/employer/register";
+    public static final String CREATE_EVENT_URL = "/api/v1/event/createEvent";
     public static final String ERROR_VALUE = "error";
     public static final String ROLES_VALUE = "roles" ;
     public static final String EMAIL_VALUE = "email" ;
@@ -109,7 +112,7 @@ public class AppUtils {
 
     public static List<String> getAuthWhiteList(){
         return List.of(
-                 LOGIN_ENDPOINT, REGISTRATION_ENDPOINT
+                 LOGIN_ENDPOINT
         );
     }
 }

@@ -1,9 +1,5 @@
 package com.example.jobcrony.data.models;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,8 +28,6 @@ public class JobOpening {
     private String yearsOfExperience;
     private boolean isVerified;
     private boolean isClosed;
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDateTime datePosted = LocalDateTime.now();
 }
 

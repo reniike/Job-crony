@@ -17,7 +17,6 @@ import com.example.jobcrony.utilities.JwtUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import static com.example.jobcrony.utilities.AppUtils.*;

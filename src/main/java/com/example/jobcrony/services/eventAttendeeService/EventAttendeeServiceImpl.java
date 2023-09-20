@@ -2,7 +2,6 @@ package com.example.jobcrony.services.eventAttendeeService;
 
 import com.example.jobcrony.data.models.Event;
 import com.example.jobcrony.data.models.EventAttendee;
-import com.example.jobcrony.data.models.EventType;
 import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.data.repositories.EventAttendeeRepository;
 import com.example.jobcrony.dtos.requests.EventAttendeeRegistrationRequest;

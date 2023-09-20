@@ -40,7 +40,6 @@ class JobSeekerServiceImplTest {
     @DisplayName("Confirm registration test")
     void confirmRegistrationTest() throws VerificationFailedException {
         jobSeekerRegistrationRequest = JobSeekerRegistrationRequest.builder()
-                        .email("cebixo7810@cohodl.com")
                         .firstName("Aliyah")
                         .lastName("eniola")
                         .phoneNumber("090")
@@ -67,7 +66,6 @@ class JobSeekerServiceImplTest {
     @DisplayName("Invalid token throws an exception test")
     void invalidTokenExceptionTest() throws VerificationFailedException {
         jobSeekerRegistrationRequest = JobSeekerRegistrationRequest.builder()
-                .email("cebixo7810@cohodl.com")
                 .firstName("Aliyah")
                 .lastName("eniola")
                 .phoneNumber("090")

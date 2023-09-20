@@ -1,12 +1,12 @@
 package com.example.jobcrony.dtos.requests;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SendMailRequest {
     private String to;
     private String from;

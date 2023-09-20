@@ -1,11 +1,16 @@
 package com.example.jobcrony.dtos.requests;
 
-public class LoginRequest {
-    public String getEmail() {
-        return null;
-    }
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public String getPassword() {
-        return null;
-    }
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginRequest {
+    private String email;
+
+    private String password;
 }

@@ -1,7 +1,6 @@
 package com.example.jobcrony.data.repositories;
 
 import com.example.jobcrony.data.models.Company;
-import com.sun.source.tree.OpensTree;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

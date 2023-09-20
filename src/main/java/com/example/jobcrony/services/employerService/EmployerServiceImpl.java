@@ -35,7 +35,6 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     public ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException {
-        ResponseEntity<GenericResponse<String>> response;
         String code = request.getCompany().getCompanyCode();
         Company company;
         if (code != null){
