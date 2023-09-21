@@ -4,6 +4,7 @@ import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserAlreadyExistException;
 import com.example.jobcrony.exceptions.VerificationFailedException;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,7 @@ class JobSeekerServiceImplTest {
 
     @Test
     @DisplayName("Pre registration test")
-    void preRegistrationTest() throws UserAlreadyExistException {
+    void preRegistrationTest() throws UserAlreadyExistException, SendMailException {
         preRegistrationRequest = PreRegistrationRequest.builder()
                 .emailAddress("cebixo7810@cohodl.com")
                 .build();

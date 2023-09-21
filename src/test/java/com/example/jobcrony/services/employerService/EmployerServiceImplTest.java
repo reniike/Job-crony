@@ -4,8 +4,10 @@ import com.example.jobcrony.dtos.requests.CompanyRegistrationRequest;
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
 import com.example.jobcrony.dtos.responses.CompanyRegistrationResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.CompanyExistsException;
 import com.example.jobcrony.exceptions.CompanyNotFoundException;
 import com.example.jobcrony.exceptions.LimitExceededException;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.services.companyService.CompanyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ class EmployerServiceImplTest {
     private CompanyRegistrationRequest companyRegistrationRequest;
 
     @DisplayName("Employer registration test")
-    @Test void  employerRegistrationTest() throws CompanyNotFoundException, LimitExceededException {
+    @Test void  employerRegistrationTest() throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
 companyRegistrationRequest = CompanyRegistrationRequest.builder()
                 .companyDescription("")
                 .companyLogo("")

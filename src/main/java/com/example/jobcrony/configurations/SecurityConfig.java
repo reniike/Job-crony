@@ -48,6 +48,7 @@ public class SecurityConfig{
                         .permitAll())
                 .authorizeHttpRequests(c -> c.requestMatchers(POST, CREATE_EVENT_URL )
                         .permitAll())
+                .authorizeHttpRequests(c -> c.requestMatchers( "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll())
                 .authorizeHttpRequests(c->c.anyRequest().authenticated())
                 .build();
     }

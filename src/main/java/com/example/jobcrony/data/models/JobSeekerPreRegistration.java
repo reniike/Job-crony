@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -18,4 +21,7 @@ public class JobSeekerPreRegistration {
     private String email;
     private String token;
     private boolean isActive = true;
+    @CreationTimestamp
+    private LocalDateTime timeCreated = LocalDateTime.now();
 }
+

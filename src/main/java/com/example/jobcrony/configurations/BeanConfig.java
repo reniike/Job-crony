@@ -80,6 +80,7 @@ public class BeanConfig {
         return new AdminInvitation();
     }
 
+
     @Bean
     public JavaMailSender javaMailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LocationServiceImpl implements LocationService{
     private LocationRepository repository;
+
     @Override
     public Location save(Location location) {
         return repository.save(location);

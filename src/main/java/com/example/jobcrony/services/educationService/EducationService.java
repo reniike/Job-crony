@@ -2,7 +2,6 @@ package com.example.jobcrony.services.educationService;
 
 import com.example.jobcrony.data.models.JobSeeker;
 import com.example.jobcrony.dtos.requests.EducationRegistrationRequest;
-import com.example.jobcrony.data.models.Education;
 
 import java.util.List;
 

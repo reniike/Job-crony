@@ -16,6 +16,7 @@ public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne
     @JsonIgnore
     private User user;

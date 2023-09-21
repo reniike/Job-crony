@@ -16,12 +16,16 @@ import java.util.List;
 public class JobSeeker extends User {
     private String profilePicture;
     private String resume;
+
     @OneToOne(mappedBy = "user")
     private Location location;
+
     @OneToMany
     private List<Education> educationList;
+
     @OneToMany(mappedBy = "user")
     private List<Experience> experienceList;
+
     @OneToMany
     private List<Skill> skills;
 }

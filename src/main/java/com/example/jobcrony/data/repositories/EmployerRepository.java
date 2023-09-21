@@ -4,4 +4,5 @@ import com.example.jobcrony.data.models.Employer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployerRepository extends JpaRepository<Employer, Long> {
+    int countEmployersByCompany_Id(Long companyId);
 }

@@ -10,6 +10,7 @@ import com.example.jobcrony.dtos.requests.SendMailRequest;
 import com.example.jobcrony.dtos.responses.AdminResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.AdminExistException;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.mailService.MailService;
@@ -54,7 +55,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> sendInvitationLink(AdminInvitationRequest invitationRequest) throws AdminExistException {
+    public ResponseEntity<GenericResponse<String>> sendInvitationLink(AdminInvitationRequest invitationRequest) throws AdminExistException, SendMailException {
         validateEmail(invitationRequest.getEmail());
         String token = jwtUtility.generateToken(invitationRequest.getEmail());
         adminInvitation.setEmail(invitationRequest.getEmail());
@@ -68,7 +69,7 @@ public class AdminServiceImpl implements AdminService{
         return ResponseEntity.ok().body(genericResponse);
     }
 
-    private void sendMail(String email, String text) {
+    private void sendMail(String email, String text) throws SendMailException {
         SendMailRequest sendMailRequest = SendMailRequest.builder()
                 .subject(ADMIN_INVITATION_LINK)
                 .from(SYSTEM_MAIL)

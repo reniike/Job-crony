@@ -22,4 +22,8 @@ public class Location {
     @JsonIgnore
     @OneToOne
     private User user;
+
+    @JsonIgnore
+    @OneToOne
+    private Company company;
 }

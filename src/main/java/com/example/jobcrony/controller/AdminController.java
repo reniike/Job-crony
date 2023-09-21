@@ -4,6 +4,7 @@ import com.example.jobcrony.dtos.requests.AdminInvitationRequest;
 import com.example.jobcrony.dtos.requests.AdminRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.AdminExistException;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.services.adminService.AdminService;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class AdminController {
     }
 
     @PostMapping("/sendInvitationLink")
-    public ResponseEntity<GenericResponse<String>> sendLink(@RequestBody AdminInvitationRequest request) throws AdminExistException {
+    public ResponseEntity<GenericResponse<String>> sendLink(@RequestBody AdminInvitationRequest request) throws AdminExistException, SendMailException {
         return adminService.sendInvitationLink(request);
     }
 }
