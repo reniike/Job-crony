@@ -10,6 +10,5 @@ import java.util.Optional;
 public interface PreRegistrationRepository extends JpaRepository<JobSeekerPreRegistration, Long> {
     Optional<JobSeekerPreRegistration> findJobSeekerPreRegistrationByToken(String token);
     Optional<JobSeekerPreRegistration> findJobSeekerPreRegistrationByEmail(String email);
-    List<JobSeekerPreRegistration> findByActiveAndTimeCreatedBefore(boolean isActive, LocalDateTime timeCreated);
-
+    List<JobSeekerPreRegistration> findAllByEmail(String token);
 }

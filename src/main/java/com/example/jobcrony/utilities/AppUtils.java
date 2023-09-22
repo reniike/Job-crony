@@ -3,7 +3,8 @@ package com.example.jobcrony.utilities;
 import java.util.List;
 
 public class AppUtils {
-    public static final String LOGIN_ENDPOINT = "/api/v1/login";
+    public static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+    public static final String LOGIN_SUCCESSFUL = "Login successful";
     public static final String MAGIC_LINK = "MAGIC LINK FROM JOB CRONY";
     public static final String SYSTEM_MAIL= "aliyahrenike@gmail.com";
     public static final String JOBSEEKER_REGISTRATION_PAGE_URL = "/api/v1/job-seeker/initiateRegistration";

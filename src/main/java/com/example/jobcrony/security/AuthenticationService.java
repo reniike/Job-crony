@@ -1,6 +1,5 @@
 package com.example.jobcrony.security;
 
-import com.example.jobcrony.data.models.User;
 import com.example.jobcrony.dtos.requests.AuthenticationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.utilities.JwtUtility;
@@ -13,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import static com.example.jobcrony.utilities.AppUtils.AUTHENTICATION_FAILED;
+import static com.example.jobcrony.utilities.AppUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +28,13 @@ public class AuthenticationService {
                             authenticationRequest.getPassword()
                     )
             );
-            User user = (User) authentication.getPrincipal();
-            String jwtToken = jwtUtility.generateToken(user);
-            return ResponseEntity.ok().body(GenericResponse.<String>builder().data(jwtToken).build());
+            JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
+            String jwtToken = jwtUtility.generateToken(userDetails.getUser());
+            return ResponseEntity.ok().body(GenericResponse.<String>builder()
+                    .status(HTTP_STATUS_OK)
+                    .message(LOGIN_SUCCESSFUL)
+                    .data(jwtToken)
+                    .build());
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(GenericResponse.<String>builder().message(AUTHENTICATION_FAILED).build());

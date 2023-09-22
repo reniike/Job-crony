@@ -29,7 +29,7 @@ public class JobSeekerRegistrationRequest {
     private String password;
     private String profilePicture;
     private String resume;
-    private Location location;
+    private LocationRequest location;
     private List<EducationRegistrationRequest> educationList;
     private List<ExperienceRegistrationRequest> experienceList;
     private List<Skill> skills;

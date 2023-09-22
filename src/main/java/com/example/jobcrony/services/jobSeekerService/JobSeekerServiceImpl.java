@@ -15,6 +15,7 @@ import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.educationService.EducationService;
 import com.example.jobcrony.services.experienceService.ExperienceService;
 import com.example.jobcrony.services.locationService.LocationService;
+import com.example.jobcrony.services.tokenService.TokenService;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.JwtUtility;
 import com.example.jobcrony.utilities.MailUtility;
@@ -41,10 +42,12 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     private LocationService locationService;
     private JobSeekerValidation validation;
     private JobCronyMapper mapper;
+    private TokenService tokenService;
 
 
     @Override
     public ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest request) throws UserAlreadyExistException, SendMailException {
+        tokenService.deletePreviousTokens(request.getEmailAddress());
         validation.validateEmailAddress(request.getEmailAddress());
 
         JobSeekerPreRegistration jobSeekerPreRegistration = new JobSeekerPreRegistration();
@@ -84,6 +87,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         String jwtToken = jwtUtility.generateToken(jobSeeker.getRoles(), jobCronyUserDetails);
         GenericResponse<String> genericResponse = GenericResponse.<String>builder()
                 .data(jwtToken)
+                .status(HTTP_STATUS_OK)
                 .message(ACCOUNT_SUCCESSFULLY_CREATED)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
