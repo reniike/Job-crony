@@ -16,4 +16,5 @@ public interface CompanyService {
     Company createCompany(CompanyRegistrationRequest request) throws CompanyExistsException, SendMailException;
     Company findByCompanyCode(String companyCode) throws CompanyNotFoundException;
     String generateCompanyUniqueCode(Company company);
+    Company findByEmail(String emailAddress) throws CompanyNotFoundException;
 }

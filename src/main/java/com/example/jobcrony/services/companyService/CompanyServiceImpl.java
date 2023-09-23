@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService{
     private LocationService locationService;
 
     @Override
-    public ResponseEntity<CompanyRegistrationResponse> registerCompany(CompanyRegistrationRequest request) throws SendMailException {
+    public ResponseEntity<CompanyRegistrationResponse> registerCompany(CompanyRegistrationRequest request) throws SendMailException, CompanyExistsException {
         Company company = this.createCompany(request);
         return ResponseEntity.ok().body(CompanyRegistrationResponse.builder()
                         .company(company)
@@ -42,18 +42,25 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company createCompany(CompanyRegistrationRequest request) throws SendMailException {
+    public Company createCompany(CompanyRegistrationRequest request) throws SendMailException, CompanyExistsException {
+        validateCompany(request.getEmail());
         Company company = mapper.map(request, Company.class);
         String companyCode = generateCompanyUniqueCode(company);
         company.setCompanyCode(companyCode);
-        repository.save(company);
 
         Location location = mapper.map(request.getLocation(), Location.class);
         location.setCompany(company);
         locationService.save(location);
 
+        company.setLocation(location);
+        repository.save(company);
+
         mailUtility.sendCompanyWelcomeEmail(company);
         return company;
+    }
+
+    private void validateCompany(String email) throws CompanyExistsException {
+        if (repository.findCompanyByCompanyEmail(email).isPresent()) throw new CompanyExistsException(COMPANY_EXISTS);
     }
 
 
@@ -67,6 +74,11 @@ public class CompanyServiceImpl implements CompanyService{
         boolean useLetters = true;
         boolean useNumbers = true;
         return RandomStringUtils.random(COMPANY_CODE_LENGTH, useLetters, useNumbers);
+    }
+
+    @Override
+    public Company findByEmail(String emailAddress) throws CompanyNotFoundException {
+        return repository.findCompanyByCompanyEmail(emailAddress).get();
     }
 
 

@@ -8,6 +8,7 @@ import com.example.jobcrony.data.repositories.PreRegistrationRepository;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.CompanyNotFoundException;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserAlreadyExistException;
 import com.example.jobcrony.exceptions.VerificationFailedException;
@@ -46,7 +47,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
 
     @Override
-    public ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest request) throws UserAlreadyExistException, SendMailException {
+    public ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest request) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException {
         tokenService.deletePreviousTokens(request.getEmailAddress());
         validation.validateEmailAddress(request.getEmailAddress());
 

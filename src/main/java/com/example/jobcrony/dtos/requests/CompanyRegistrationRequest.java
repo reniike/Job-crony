@@ -14,7 +14,7 @@ public class CompanyRegistrationRequest {
     private String companyName;
 
     @NotBlank
-    private Location location;
+    private LocationRequest location;
 
     @NotBlank
     private String website;

@@ -20,7 +20,7 @@ public class AutoGenerateAdmin {
     private ModelMapper mapper;
 
     @PostConstruct
-    public void saveAdmin() throws AdminExistException {
+    public void saveAdmin() {
         try {
         AdminRegistrationRequest request = AdminRegistrationRequest.builder()
                 .email("aliyaheniola91@gmail.com")

@@ -18,6 +18,7 @@ import com.example.jobcrony.utilities.JwtUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
@@ -31,6 +32,8 @@ public class AdminServiceImpl implements AdminService{
     private ModelMapper modelMapper;
     private MailService mailService;
     private JwtUtility jwtUtility;
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public AdminResponse findByEmail(String email) {
         return null;
@@ -40,6 +43,7 @@ public class AdminServiceImpl implements AdminService{
     public ResponseEntity<GenericResponse<String>> registerAdmin(AdminRegistrationRequest request) throws UserNotFoundException {
         validateToken(request.getEmail(),request.getToken());
         Admin admin = modelMapper.map(request, Admin.class);
+        admin.setPassword(passwordEncoder.encode(request.getPassword()));
         adminRepository.save(admin);
         JobCronyUserDetails userDetails = new JobCronyUserDetails(admin);
         String token = jwtUtility.generateToken(admin.getRoles(), userDetails);

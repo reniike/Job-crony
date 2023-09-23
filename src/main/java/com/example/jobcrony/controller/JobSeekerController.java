@@ -3,6 +3,7 @@ package com.example.jobcrony.controller;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.CompanyNotFoundException;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserAlreadyExistException;
 import com.example.jobcrony.exceptions.VerificationFailedException;
@@ -22,7 +23,7 @@ public class JobSeekerController {
     private JobSeekerService jobSeekerService;
 
     @PostMapping("/initiateRegistration")
-    public ResponseEntity<GenericResponse<String>> initiateRegistration(@RequestBody PreRegistrationRequest preRegistrationRequest) throws UserAlreadyExistException, SendMailException {
+    public ResponseEntity<GenericResponse<String>> initiateRegistration(@RequestBody PreRegistrationRequest preRegistrationRequest) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException {
         return jobSeekerService.initiateRegistration(preRegistrationRequest);
     }
 

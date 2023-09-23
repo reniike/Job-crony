@@ -31,7 +31,6 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 @Service
 @AllArgsConstructor
 @Slf4j
-@Transactional
 public class EmployerServiceImpl implements EmployerService {
     private final EmployerRepository repository;
     private LocationService locationService;
@@ -41,6 +40,7 @@ public class EmployerServiceImpl implements EmployerService {
     private MailUtility mailUtility;
     private JobCronyMapper mapper;
     @Override
+    @Transactional
     public ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
         String code = request.getCompany().getCompanyCode();
         Company company;

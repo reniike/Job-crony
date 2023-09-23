@@ -3,6 +3,7 @@ package com.example.jobcrony.dtos.requests;
 import com.example.jobcrony.data.models.EventType;
 import com.example.jobcrony.data.models.Location;
 import lombok.*;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventCreationRequest {
-    private Long id;
+    private Long employerId;
     private String title;
     private String description;
-    private Location location;
+    private LocationRequest location;
     private String virtualLink;
     private EventType eventType;
     private LocalDateTime startDateAndTime;

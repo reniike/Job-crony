@@ -40,7 +40,7 @@ public class EmployerRegistrationRequest {
     private CompanyRegistrationRequest company;
 
     @NotBlank
-    private Location location;
+    private LocationRequest location;
 
     @NotBlank
     private Set<Role> roles;
