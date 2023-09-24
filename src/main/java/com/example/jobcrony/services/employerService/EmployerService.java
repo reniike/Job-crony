@@ -1,7 +1,6 @@
 package com.example.jobcrony.services.employerService;
 
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
-import com.example.jobcrony.dtos.responses.EmployerResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.CompanyExistsException;
 import com.example.jobcrony.exceptions.CompanyNotFoundException;

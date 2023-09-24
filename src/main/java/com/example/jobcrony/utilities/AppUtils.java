@@ -25,7 +25,7 @@ public class AppUtils {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String EMPTY_SPACE_VALUE = " ";
     public static final String ACCESS_TOKEN_VALUE = "access_token" ;
-
+    public static final String JOB_POSTED_SUCCESSFULLY = "Job posted successfully";
     public static final String USER_WITH_EMAIL_NOT_FOUND = "User with email not found";
     public static final String EMAIL_SENT_SUCCESSFULLY = "Email successfully sent!" ;
     public static final String HTTP_STATUS_OK = "200";

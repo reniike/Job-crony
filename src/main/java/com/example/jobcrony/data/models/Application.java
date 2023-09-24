@@ -19,14 +19,13 @@ public class Application {
 
     private Long jobSeekerId;
 
-    private Long jobOpeningId;
+    @ManyToOne
+    private JobOpening jobOpening;
 
     private String resume;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
 
-//    @JsonSerialize(using = LocalDateTimeSerializer.class)
-//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime applicationDate = LocalDateTime.now();
 }
