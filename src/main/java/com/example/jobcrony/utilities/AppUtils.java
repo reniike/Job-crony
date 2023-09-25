@@ -56,6 +56,7 @@ public class AppUtils {
     public static final String COMPANY_EXISTS = "Company exists!" ;
     public static final String CONFIRMATION_MAIL = "Registration Confirmation Mail";
     public static final String REGISTERED_SUCCESSFULLY = "Registered Successfully";
+    public static final String JOB_OPENING_URL = "/api/v1/job/postJobOpening";
 
     public static List<String> getAuthWhiteList(){
         return List.of(

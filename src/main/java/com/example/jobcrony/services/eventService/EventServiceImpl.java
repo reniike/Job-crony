@@ -34,6 +34,7 @@ public class EventServiceImpl implements EventService{
             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         }
         Event event = modelMapper.map(request, Event.class);
+
         Location location = Location.builder()
                 .country(request.getLocation().getCountry())
                 .city(request.getLocation().getCity())
@@ -41,6 +42,7 @@ public class EventServiceImpl implements EventService{
                 .postalCode(request.getLocation().getPostalCode())
                 .build();
         Location savedLocation = locationService.save(location);
+
         event.setLocation(savedLocation);
         eventRepository.save(event);
 
