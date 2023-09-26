@@ -1,12 +1,14 @@
 package com.example.jobcrony.services.jobOpeningService;
 
-import com.example.jobcrony.data.models.*;
+import com.example.jobcrony.data.models.Employer;
+import com.example.jobcrony.data.models.JobOpening;
+import com.example.jobcrony.data.models.Role;
+import com.example.jobcrony.data.models.Skill;
 import com.example.jobcrony.data.repositories.JobOpeningRepository;
 import com.example.jobcrony.dtos.requests.JobOpeningRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.security.JobCronyUserDetails;
-import com.example.jobcrony.services.applicationService.ApplicationService;
 import com.example.jobcrony.services.skillService.SkillService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
