@@ -7,10 +7,7 @@ import com.example.jobcrony.data.repositories.EmployerRepository;
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
 import com.example.jobcrony.dtos.responses.EmployerResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.CompanyExistsException;
-import com.example.jobcrony.exceptions.CompanyNotFoundException;
-import com.example.jobcrony.exceptions.LimitExceededException;
-import com.example.jobcrony.exceptions.SendMailException;
+import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.companyService.CompanyService;
 import com.example.jobcrony.services.locationService.LocationService;
@@ -72,6 +69,11 @@ public class EmployerServiceImpl implements EmployerService {
     @Override
     public int countEmployersByCompanyId(Long companyId) {
         return repository.countEmployersByCompany_Id(companyId);
+    }
+
+    @Override
+    public Employer findEmployer(Long employerId) throws UserNotFoundException {
+        return repository.findById(employerId).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
     }
 
     private void validateCompany(Company company) throws LimitExceededException {

@@ -20,6 +20,9 @@ public class JobSeeker extends User {
     @OneToOne(mappedBy = "user")
     private Location location;
 
+    @OneToOne
+    private Application application;
+
     @OneToMany
     private List<Education> educationList;
 
