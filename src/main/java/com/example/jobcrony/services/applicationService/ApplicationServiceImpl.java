@@ -34,7 +34,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         if (!userDetails.getUser().getRoles().contains(Role.JOB_SEEKER)){
             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         }
-        JobOpening jobOpening = jobOpeningService.findJobOpening(request.getJobOpening());
+        JobOpening jobOpening = jobOpeningService.findJobOpening(request.getJobOpeningId());
         JobSeeker jobSeeker = (JobSeeker) userDetails.getUser();
 
         Application application = Application.builder()

@@ -36,6 +36,6 @@ public class JobOpening {
     private String yearsOfExperience;
     private boolean isVerified;
     private boolean isClosed;
-    private LocalDateTime datePosted = LocalDateTime.now();
+    private final LocalDateTime datePosted = LocalDateTime.now();
 }
 

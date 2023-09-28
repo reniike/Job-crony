@@ -19,9 +19,6 @@ public class Application {
     private Long id;
 
     @OneToOne
-    private Employer employer;
-
-    @OneToOne
     private JobSeeker jobSeeker;
 
     @ManyToOne
@@ -43,5 +40,5 @@ public class Application {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
 
-    private LocalDateTime applicationDate = LocalDateTime.now();
+    private final LocalDateTime applicationDate = LocalDateTime.now();
 }

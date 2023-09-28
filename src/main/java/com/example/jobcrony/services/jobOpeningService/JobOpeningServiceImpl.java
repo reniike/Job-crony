@@ -21,12 +21,10 @@ import org.webjars.NotFoundException;
 import java.util.List;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @AllArgsConstructor
 public class JobOpeningServiceImpl implements JobOpeningService{
-
     private final JobOpeningRepository repository;
     private final SkillService skillService;
 
@@ -60,7 +58,7 @@ public class JobOpeningServiceImpl implements JobOpeningService{
     }
 
     @Override
-    public JobOpening findJobOpening(JobOpening jobOpening) {
-        return repository.findById(jobOpening.getId()).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
+    public JobOpening findJobOpening(Long jobOpeningId) {
+        return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
     }
 }
