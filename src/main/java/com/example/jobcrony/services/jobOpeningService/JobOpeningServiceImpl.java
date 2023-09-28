@@ -10,15 +10,18 @@ import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.skillService.SkillService;
+import com.example.jobcrony.utilities.AppUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -54,5 +57,10 @@ public class JobOpeningServiceImpl implements JobOpeningService{
                         .status(HTTP_STATUS_OK)
                         .message(JOB_POSTED_SUCCESSFULLY)
                         .build());
+    }
+
+    @Override
+    public JobOpening findJobOpening(JobOpening jobOpening) {
+        return repository.findById(jobOpening.getId()).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
     }
 }

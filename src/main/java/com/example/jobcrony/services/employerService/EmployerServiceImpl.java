@@ -76,6 +76,7 @@ public class EmployerServiceImpl implements EmployerService {
         return repository.findById(employerId).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
     }
 
+
     private void validateCompany(Company company) throws LimitExceededException {
         int employerCount = repository.countEmployersByCompany_Id(company.getId());
         if(employerCount >= THREE) throw new LimitExceededException(MAX_NUMBER_OF_EMPLOYERS_REACHED);

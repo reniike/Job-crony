@@ -38,6 +38,8 @@ public class Application {
     @OneToMany
     private List<Experience> experiences;
 
+    private String coverLetter;
+
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
 
