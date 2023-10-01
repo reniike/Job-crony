@@ -87,6 +87,16 @@ public class ApplicationServiceImpl implements ApplicationService{
         return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).build());
     }
 
+    @Override
+    public ResponseEntity<GenericResponse<String>> rejectApplication(Long applicationId) throws SendMailException {
+        Application foundApplication  = repository.findById(applicationId).orElseThrow(() ->new NotFoundException(NOT_FOUND));
+        foundApplication.setApplicationStatus(ApplicationStatus.REJECTED);
+
+        Application savedApplication = repository.save(foundApplication);
+        mailUtility.sendJobSeekerRejectionMail(savedApplication);
+        return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).build());
+    }
+
 
     @Override
     public List<Application> saveApplications(List<Application> applications) {

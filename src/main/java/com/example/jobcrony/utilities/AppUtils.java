@@ -62,6 +62,7 @@ public class AppUtils {
     public static final String WITHDRAWN_SUCCESSFULLY = "Your application has been successfully withdrawn!";
     public static final String YOUR_APPLICATION_HAS_BEEN_VIEWED = "Your application has been viewed!";
     public static final String NEXT_INTERVIEW =  "Advancing to the Next Interview Stage!";
+    public static final String REJECTION_UPDATE = "Update on Your Application!";
 
     public static List<String> getAuthWhiteList(){
         return List.of(

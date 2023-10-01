@@ -88,4 +88,27 @@ public class MailUtility {
                 .build();
         mailService.sendMail(sendMailRequest);
     }
+
+    public void sendJobSeekerRejectionMail(Application savedApplication) throws SendMailException {
+        JobSeeker jobSeeker = savedApplication.getJobSeeker();
+        String firstName = jobSeeker.getFirstName();
+        String jobSeekerEmail = jobSeeker.getEmail();
+
+        JobOpening jobOpening = savedApplication.getJobOpening();
+        String jobTitle = jobOpening.getJobTitle();
+        String companyName = jobOpening.getEmployer().getCompany().getCompanyName();
+
+        Context context = new Context();
+        context.setVariables(Map.of("firstName", firstName, "companyName", companyName , "jobTitle", jobTitle));
+
+        String mailContent = templateEngine.process("rejection_email", context);
+        SendMailRequest sendMailRequest = SendMailRequest.builder()
+                .subject(REJECTION_UPDATE)
+                .text(mailContent)
+                .to(jobSeekerEmail)
+                .from(SYSTEM_MAIL)
+                .build();
+
+        mailService.sendMail(sendMailRequest);
+    }
 }

@@ -16,5 +16,6 @@ public interface ApplicationService {
     ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId);
     ResponseEntity<GenericResponse<String>>  reviewApplication(Long applicationId);
     ResponseEntity<GenericResponse<String>>  acceptApplication(Long applicationId) throws SendMailException;
+    ResponseEntity<GenericResponse<String>>  rejectApplication(Long applicationId) throws SendMailException;
 }
 

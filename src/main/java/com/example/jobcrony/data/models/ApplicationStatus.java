@@ -1,5 +1,5 @@
 package com.example.jobcrony.data.models;
 
 public enum ApplicationStatus {
-    PENDING, REVIEWED, ACCEPTED
+    PENDING, REVIEWED, ACCEPTED, REJECTED
 }
