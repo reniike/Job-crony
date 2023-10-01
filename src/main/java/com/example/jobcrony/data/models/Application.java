@@ -41,4 +41,6 @@ public class Application {
     private ApplicationStatus applicationStatus;
 
     private final LocalDateTime applicationDate = LocalDateTime.now();
+
+
 }

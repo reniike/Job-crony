@@ -7,13 +7,13 @@ import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
-import com.example.jobcrony.services.employerService.EmployerService;
 import com.example.jobcrony.services.jobOpeningService.JobOpeningService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -45,6 +45,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                 .experiences(jobSeeker.getExperienceList())
                 .educationList(jobSeeker.getEducationList())
                 .coverLetter(request.getCoverLetter())
+                .applicationStatus(ApplicationStatus.PENDING)
                 .build();
 
         repository.save(application);
@@ -57,8 +58,18 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
+    public ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId) {
+        Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
+        repository.delete(foundApplication);
+        return ResponseEntity.ok().body(GenericResponse.<String>builder().message(WITHDRAWN_SUCCESSFULLY).status(HTTP_STATUS_OK).build());
+    }
+
+
+    @Override
     public List<Application> saveApplications(List<Application> applications) {
         return repository.saveAll(applications);
     }
+
+
 
 }

@@ -58,7 +58,8 @@ public class AppUtils {
     public static final String REGISTERED_SUCCESSFULLY = "Registered Successfully";
     public static final String JOB_OPENING_URL = "/api/v1/job/postJobOpening";
     public static final String NOT_FOUND = "Not found!";
-    public static final String APPLICATION_SENT_SUCCESSFULLY = "Application sent successfully";
+    public static final String APPLICATION_SENT_SUCCESSFULLY = "Application sent successfully!";
+    public static final String WITHDRAWN_SUCCESSFULLY = "Your application has been successfully withdrawn!";
 
     public static List<String> getAuthWhiteList(){
         return List.of(

@@ -12,4 +12,7 @@ import java.util.List;
 public interface ApplicationService {
     List<Application> saveApplications(List<Application> applications);
     ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, UserNotFoundException;
+    ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId);
+
 }
+
