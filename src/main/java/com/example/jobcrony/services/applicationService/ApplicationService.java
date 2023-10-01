@@ -3,6 +3,7 @@ package com.example.jobcrony.services.applicationService;
 import com.example.jobcrony.data.models.Application;
 import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -14,5 +15,6 @@ public interface ApplicationService {
     ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, UserNotFoundException;
     ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId);
     ResponseEntity<GenericResponse<String>>  reviewApplication(Long applicationId);
+    ResponseEntity<GenericResponse<String>>  acceptApplication(Long applicationId) throws SendMailException;
 }
 

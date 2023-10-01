@@ -4,6 +4,7 @@ import com.example.jobcrony.data.models.*;
 import com.example.jobcrony.data.repositories.ApplicationRepository;
 import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
@@ -73,6 +74,19 @@ public class ApplicationServiceImpl implements ApplicationService{
         repository.save(foundApplication);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).message(YOUR_APPLICATION_HAS_BEEN_VIEWED).build());
     }
+
+    @Override
+    public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) throws SendMailException {
+        Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
+        foundApplication.setApplicationStatus(ApplicationStatus.ACCEPTED);
+
+        Application savedApplication = repository.save(foundApplication);
+
+        mailUtility.sendJobSeekerInterviewMail(savedApplication);
+
+        return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).build());
+    }
+
 
     @Override
     public List<Application> saveApplications(List<Application> applications) {

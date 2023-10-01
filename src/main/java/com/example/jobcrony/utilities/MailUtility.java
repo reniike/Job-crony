@@ -1,7 +1,6 @@
 package com.example.jobcrony.utilities;
 
-import com.example.jobcrony.data.models.Company;
-import com.example.jobcrony.data.models.Employer;
+import com.example.jobcrony.data.models.*;
 import com.example.jobcrony.dtos.requests.SendMailRequest;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.services.mailService.MailService;
@@ -64,6 +63,28 @@ public class MailUtility {
                 .subject(MAGIC_LINK)
                 .from(SYSTEM_MAIL)
                 .to(emailAddress)
+                .build();
+        mailService.sendMail(sendMailRequest);
+    }
+
+    public void sendJobSeekerInterviewMail(Application savedApplication) throws SendMailException {
+        JobSeeker jobSeeker = savedApplication.getJobSeeker();
+        String jobSeekerEmail = jobSeeker.getEmail();
+        String firstName = jobSeeker.getFirstName();
+
+        JobOpening jobOpening = savedApplication.getJobOpening();
+        String jobTitle = jobOpening.getJobTitle();
+        String companyName = jobOpening.getEmployer().getCompany().getCompanyName();
+
+        Context context = new Context();
+        context.setVariables(Map.of("firstName", firstName, "jobTitle", jobTitle, "companyName", companyName));
+
+        String mailContent = templateEngine.process("interview_email", context);
+        SendMailRequest sendMailRequest = SendMailRequest.builder()
+                .subject(NEXT_INTERVIEW)
+                .text(mailContent)
+                .to(jobSeekerEmail)
+                .from(SYSTEM_MAIL)
                 .build();
         mailService.sendMail(sendMailRequest);
     }
