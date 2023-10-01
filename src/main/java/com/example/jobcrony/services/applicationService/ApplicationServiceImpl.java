@@ -8,6 +8,7 @@ import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.jobOpeningService.JobOpeningService;
+import com.example.jobcrony.utilities.MailUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 public class ApplicationServiceImpl implements ApplicationService{
     private final ApplicationRepository repository;
     private final JobOpeningService jobOpeningService;
+    private final MailUtility mailUtility;
 
 
     @Override
@@ -64,6 +66,13 @@ public class ApplicationServiceImpl implements ApplicationService{
         return ResponseEntity.ok().body(GenericResponse.<String>builder().message(WITHDRAWN_SUCCESSFULLY).status(HTTP_STATUS_OK).build());
     }
 
+    @Override
+    public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) {
+        Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
+        foundApplication.setApplicationStatus(ApplicationStatus.ACCEPTED);
+        repository.save(foundApplication);
+        return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).message(YOUR_APPLICATION_HAS_BEEN_VIEWED).build());
+    }
 
     @Override
     public List<Application> saveApplications(List<Application> applications) {
