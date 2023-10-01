@@ -67,9 +67,9 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) {
+    public ResponseEntity<GenericResponse<String>> reviewApplication(Long applicationId) {
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
-        foundApplication.setApplicationStatus(ApplicationStatus.ACCEPTED);
+        foundApplication.setApplicationStatus(ApplicationStatus.REVIEWED);
         repository.save(foundApplication);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).message(YOUR_APPLICATION_HAS_BEEN_VIEWED).build());
     }
