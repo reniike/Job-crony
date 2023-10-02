@@ -57,6 +57,8 @@ public class JobOpeningServiceImpl implements JobOpeningService{
                         .build());
     }
 
+
+
     @Override
     public JobOpening findJobOpening(Long jobOpeningId) {
         return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));

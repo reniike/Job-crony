@@ -30,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
 
     @Override
-    public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, UserNotFoundException {
+    public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
 
@@ -61,14 +61,26 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId) {
+    public ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId) throws UserNotAuthorizedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
+
+        if (!userDetails.getUser().getRoles().contains(Role.JOB_SEEKER)){
+             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+        }
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         repository.delete(foundApplication);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().message(WITHDRAWN_SUCCESSFULLY).status(HTTP_STATUS_OK).build());
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> reviewApplication(Long applicationId) {
+    public ResponseEntity<GenericResponse<String>> reviewApplication(Long applicationId) throws UserNotAuthorizedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
+
+        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
+            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+        }
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.REVIEWED);
         repository.save(foundApplication);
@@ -76,7 +88,14 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) throws SendMailException {
+    public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
+
+        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
+            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+        }
+
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.ACCEPTED);
 
@@ -88,13 +107,24 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public ResponseEntity<GenericResponse<String>> rejectApplication(Long applicationId) throws SendMailException {
+    public ResponseEntity<GenericResponse<String>> rejectApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
+
+        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
+            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+        }
         Application foundApplication  = repository.findById(applicationId).orElseThrow(() ->new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.REJECTED);
 
         Application savedApplication = repository.save(foundApplication);
         mailUtility.sendJobSeekerRejectionMail(savedApplication);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).build());
+    }
+
+    @Override
+    public List<Application> getAllApplications(Long jobOpeningId) {
+        return repository.findApplicationsByJobOpening_Id(jobOpeningId);
     }
 
 
