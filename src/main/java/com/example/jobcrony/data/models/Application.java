@@ -26,13 +26,13 @@ public class Application {
 
     private String resume;
 
-    @OneToMany
+    @ManyToMany
     private List<Skill> skills;
 
-    @OneToMany
+    @ManyToMany
     private List<Education> educationList;
 
-    @OneToMany
+    @ManyToMany
     private List<Experience> experiences;
 
     private String coverLetter;

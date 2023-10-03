@@ -70,8 +70,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Override
     public ResponseEntity<GenericResponse<String>> completeRegistration(JobSeekerRegistrationRequest request) throws VerificationFailedException {
-        JobSeekerPreRegistration preRegistration = preRegistrationRepository.findJobSeekerPreRegistrationByToken(request.getToken())
-                .orElseThrow(() -> new VerificationFailedException(VERIFICATION_FAILED));
+        JobSeekerPreRegistration preRegistration = validateTokenAndGetPreRegistration(request.getToken());
 
         JobSeeker jobSeeker = mapper.map(request, preRegistration.getEmail());
         jobSeekerRepository.saveAndFlush(jobSeeker);
@@ -92,5 +91,10 @@ public class JobSeekerServiceImpl implements JobSeekerService {
                 .message(ACCOUNT_SUCCESSFULLY_CREATED)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
+    }
+
+    private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {
+        return preRegistrationRepository.findJobSeekerPreRegistrationByToken(token)
+                .orElseThrow(() -> new VerificationFailedException(VERIFICATION_FAILED));
     }
 }

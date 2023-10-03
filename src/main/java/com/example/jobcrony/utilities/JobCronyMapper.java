@@ -1,8 +1,7 @@
 package com.example.jobcrony.utilities;
 
-import com.example.jobcrony.data.models.Company;
-import com.example.jobcrony.data.models.Employer;
-import com.example.jobcrony.data.models.JobSeeker;
+import com.example.jobcrony.data.models.*;
+import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class JobCronyMapper {
     private PasswordEncoder passwordEncoder;
 
-    public Employer map(EmployerRegistrationRequest request, Company company){
+    public Employer map(EmployerRegistrationRequest request, Company company) {
         return Employer.builder()
                 .email(request.getEmail())
                 .roles(request.getRoles())
@@ -26,7 +25,7 @@ public class JobCronyMapper {
                 .build();
     }
 
-    public JobSeeker map(JobSeekerRegistrationRequest request, String email){
+    public JobSeeker map(JobSeekerRegistrationRequest request, String email) {
         return JobSeeker.builder()
                 .profilePicture(request.getProfilePicture())
                 .email(email)
@@ -38,4 +37,16 @@ public class JobCronyMapper {
                 .build();
     }
 
+    public Application map(ApplicationRequest request, JobOpening jobOpening, JobSeeker jobSeeker) {
+        return Application.builder()
+                .jobSeeker(jobSeeker)
+                .jobOpening(jobOpening)
+                .resume(request.getResume())
+                .skills(jobSeeker.getSkills())
+                .experiences(jobSeeker.getExperienceList())
+                .educationList(jobSeeker.getEducationList())
+                .coverLetter(request.getCoverLetter())
+                .applicationStatus(ApplicationStatus.PENDING)
+                .build();
+    }
 }

@@ -1,9 +1,6 @@
 package com.example.jobcrony.services.jobOpeningService;
 
-import com.example.jobcrony.data.models.Employer;
-import com.example.jobcrony.data.models.JobOpening;
-import com.example.jobcrony.data.models.Role;
-import com.example.jobcrony.data.models.Skill;
+import com.example.jobcrony.data.models.*;
 import com.example.jobcrony.data.repositories.JobOpeningRepository;
 import com.example.jobcrony.dtos.requests.JobOpeningRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
@@ -63,4 +60,5 @@ public class JobOpeningServiceImpl implements JobOpeningService{
     public JobOpening findJobOpening(Long jobOpeningId) {
         return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
     }
+
 }

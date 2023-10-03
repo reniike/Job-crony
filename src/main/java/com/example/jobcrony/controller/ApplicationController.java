@@ -3,6 +3,7 @@ package com.example.jobcrony.controller;
 import com.example.jobcrony.data.models.Application;
 import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.ApplicationAlreadyExistsException;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.exceptions.UserNotFoundException;
@@ -21,7 +22,7 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @PostMapping("/apply")
-    public ResponseEntity<GenericResponse<String>> apply(@RequestBody ApplicationRequest request) throws UserNotFoundException, UserNotAuthorizedException {
+    public ResponseEntity<GenericResponse<String>> apply(@RequestBody ApplicationRequest request) throws UserNotFoundException, UserNotAuthorizedException, ApplicationAlreadyExistsException {
        return applicationService.initiateJobApplication(request);
     }
 

@@ -20,6 +20,7 @@ public class Experience {
     @ManyToOne
     @JsonIgnore
     private User user;
+
     private String companyName;
     private String jobTitle;
     private LocalDateTime startDate;

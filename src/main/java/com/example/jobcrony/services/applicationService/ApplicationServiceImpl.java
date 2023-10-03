@@ -4,12 +4,14 @@ import com.example.jobcrony.data.models.*;
 import com.example.jobcrony.data.repositories.ApplicationRepository;
 import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
+import com.example.jobcrony.exceptions.ApplicationAlreadyExistsException;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
-import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.jobOpeningService.JobOpeningService;
+import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.MailUtility;
+import com.example.jobcrony.utilities.validations.JobSeekerValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,30 +28,26 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 public class ApplicationServiceImpl implements ApplicationService{
     private final ApplicationRepository repository;
     private final JobOpeningService jobOpeningService;
+    private final JobCronyMapper mapper;
     private final MailUtility mailUtility;
+    private final JobSeekerValidation validation;
 
 
     @Override
-    public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException{
+    public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, ApplicationAlreadyExistsException {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
 
         if (!userDetails.getUser().getRoles().contains(Role.JOB_SEEKER)){
             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         }
+
         JobOpening jobOpening = jobOpeningService.findJobOpening(request.getJobOpeningId());
         JobSeeker jobSeeker = (JobSeeker) userDetails.getUser();
 
-        Application application = Application.builder()
-                .jobSeeker(jobSeeker)
-                .jobOpening(jobOpening)
-                .resume(request.getResume())
-                .skills(jobSeeker.getSkills())
-                .experiences(jobSeeker.getExperienceList())
-                .educationList(jobSeeker.getEducationList())
-                .coverLetter(request.getCoverLetter())
-                .applicationStatus(ApplicationStatus.PENDING)
-                .build();
+        validateDuplicateApplication(jobOpening.getId(), jobSeeker.getId());
+        Application application = mapper.map(request, jobOpening, jobSeeker);
 
         repository.save(application);
 
@@ -58,6 +56,11 @@ public class ApplicationServiceImpl implements ApplicationService{
                 .message(APPLICATION_SENT_SUCCESSFULLY)
                 .build();
         return ResponseEntity.ok().body(response);
+    }
+
+    private void validateDuplicateApplication(Long jobOpeningId, Long jobSeekerId) throws ApplicationAlreadyExistsException {
+        if (repository.existsByJobOpening_IdAndJobSeeker_Id(jobOpeningId, jobSeekerId))
+            throw new ApplicationAlreadyExistsException(YOU_ALREADY_APPLIED_FOR_THIS_JOB_OPENING);
     }
 
     @Override
@@ -132,7 +135,4 @@ public class ApplicationServiceImpl implements ApplicationService{
     public List<Application> saveApplications(List<Application> applications) {
         return repository.saveAll(applications);
     }
-
-
-
 }
