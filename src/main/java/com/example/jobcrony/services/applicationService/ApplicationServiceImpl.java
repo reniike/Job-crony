@@ -30,7 +30,6 @@ public class ApplicationServiceImpl implements ApplicationService{
     private final JobOpeningService jobOpeningService;
     private final JobCronyMapper mapper;
     private final MailUtility mailUtility;
-    private final JobSeekerValidation validation;
 
 
     @Override

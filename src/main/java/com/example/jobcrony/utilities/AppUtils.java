@@ -64,6 +64,7 @@ public class AppUtils {
     public static final String NEXT_INTERVIEW =  "Advancing to the Next Interview Stage!";
     public static final String REJECTION_UPDATE = "Update on Your Application!";
     public static final String YOU_ALREADY_APPLIED_FOR_THIS_JOB_OPENING = "You already applied for this job opening!" ;
+    public static final String COMPANY_DETAILS_UPDATED_SUCCESSFULLY = "Company details updated successfully!";
 
     public static List<String> getAuthWhiteList(){
         return List.of(

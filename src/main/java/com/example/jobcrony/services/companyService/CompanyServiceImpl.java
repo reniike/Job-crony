@@ -5,7 +5,9 @@ import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.data.repositories.CompanyRepository;
 import com.example.jobcrony.dtos.requests.CompanyRegistrationRequest;
 import com.example.jobcrony.dtos.requests.SendMailRequest;
+import com.example.jobcrony.dtos.requests.UpdateCompanyDetailRequest;
 import com.example.jobcrony.dtos.responses.CompanyRegistrationResponse;
+import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.CompanyExistsException;
 import com.example.jobcrony.exceptions.CompanyNotFoundException;
 import com.example.jobcrony.exceptions.LimitExceededException;
@@ -31,15 +33,6 @@ public class CompanyServiceImpl implements CompanyService{
     private ModelMapper mapper;
     private MailUtility mailUtility;
     private LocationService locationService;
-
-    @Override
-    public ResponseEntity<CompanyRegistrationResponse> registerCompany(CompanyRegistrationRequest request) throws SendMailException, CompanyExistsException {
-        Company company = this.createCompany(request);
-        return ResponseEntity.ok().body(CompanyRegistrationResponse.builder()
-                        .company(company)
-                        .message(COMPANY_REGISTERED_SUCCESSFULLY)
-                .build());
-    }
 
     @Override
     public Company createCompany(CompanyRegistrationRequest request) throws SendMailException, CompanyExistsException {
@@ -79,6 +72,30 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public Company findByEmail(String emailAddress) throws CompanyNotFoundException {
         return repository.findCompanyByCompanyEmail(emailAddress).get();
+    }
+
+    @Override
+    public ResponseEntity<GenericResponse<String>> updateCompanyDetails(UpdateCompanyDetailRequest request) throws CompanyNotFoundException {
+        Company foundCompany = findByCompanyCode(request.getCompanyCode());
+        foundCompany.setCompanyDescription(request.getCompanyDescription());
+        foundCompany.setCompanyName(request.getCompanyName());
+        foundCompany.setCompanyLogo(request.getCompanyLogo());
+        foundCompany.setCompanyIndustry(request.getIndustry());
+        foundCompany.setContactNumber(request.getContactNumber());
+        foundCompany.setNumberOfEmployees(request.getNumberOfEmployees());
+        foundCompany.setCompanyWebsiteUrl(request.getWebsite());
+
+        Location location = mapper.map(request.getLocation(), Location.class);
+        location.setCompany(foundCompany);
+        locationService.save(location);
+        foundCompany.setLocation(location);
+        repository.save(foundCompany);
+
+        GenericResponse<String> genericResponse = GenericResponse.<String>builder()
+                .status(HTTP_STATUS_OK)
+                .message(COMPANY_DETAILS_UPDATED_SUCCESSFULLY)
+                .build();
+        return ResponseEntity.ok().body(genericResponse);
     }
 
 

@@ -6,4 +6,6 @@ import com.example.jobcrony.exceptions.UserNotFoundException;
 
 public interface UserService {
    UserResponse findByEmail(String email) throws UserNotFoundException;
+
+
 }
