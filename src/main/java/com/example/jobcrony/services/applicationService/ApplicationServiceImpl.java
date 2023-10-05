@@ -11,7 +11,6 @@ import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.jobOpeningService.JobOpeningService;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.MailUtility;
-import com.example.jobcrony.utilities.validations.JobSeekerValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

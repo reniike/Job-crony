@@ -5,10 +5,7 @@ import com.example.jobcrony.dtos.requests.CompanyRegistrationRequest;
 import com.example.jobcrony.dtos.requests.UpdateCompanyDetailRequest;
 import com.example.jobcrony.dtos.responses.CompanyRegistrationResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.CompanyExistsException;
-import com.example.jobcrony.exceptions.CompanyNotFoundException;
-import com.example.jobcrony.exceptions.LimitExceededException;
-import com.example.jobcrony.exceptions.SendMailException;
+import com.example.jobcrony.exceptions.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -18,5 +15,5 @@ public interface CompanyService {
     Company findByCompanyCode(String companyCode) throws CompanyNotFoundException;
     String generateCompanyUniqueCode(Company company);
     Company findByEmail(String emailAddress) throws CompanyNotFoundException;
-    ResponseEntity<GenericResponse<String>> updateCompanyDetails(UpdateCompanyDetailRequest companyDetailRequest) throws CompanyNotFoundException;
+    ResponseEntity<GenericResponse<String>> updateCompanyDetails(UpdateCompanyDetailRequest request) throws CompanyNotFoundException, UserNotAuthorizedException;
 }
