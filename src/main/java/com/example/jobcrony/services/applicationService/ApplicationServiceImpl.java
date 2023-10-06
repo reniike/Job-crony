@@ -33,7 +33,6 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, ApplicationAlreadyExistsException {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
 

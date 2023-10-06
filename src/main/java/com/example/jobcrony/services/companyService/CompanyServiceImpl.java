@@ -91,45 +91,22 @@ public class CompanyServiceImpl implements CompanyService{
             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         }
         Employer employer = (Employer) userDetails.getUser();
-        log.info("1");
+
         Company foundCompany = findByCompanyCode(employer.getCompany().getCompanyCode());
-        log.info("2");
-        log.info(foundCompany.toString());
-        foundCompany.setCompanyDescription(request.getCompanyDescription());
-        foundCompany.setCompanyName(request.getCompanyName());
-        foundCompany.setCompanyLogo(request.getCompanyLogo());
-        foundCompany.setCompanyIndustry(request.getIndustry());
-        foundCompany.setContactNumber(request.getContactNumber());
-        foundCompany.setNumberOfEmployees(request.getNumberOfEmployees());
-        foundCompany.setCompanyWebsiteUrl(request.getWebsite());
-        log.info("3");
+        cronyMapper.map(foundCompany, request);
 
-        System.out.println("This is the request " + request);
+        LocationRequest requestLocation = request.getLocation();
+        Location location = foundCompany.getLocation();
+        cronyMapper.map(requestLocation, foundCompany);
 
-        LocationRequest requestedLocation = request.getLocation();
-        Location location = Location.builder()
-                .postalCode(requestedLocation.getPostalCode())
-                .state(requestedLocation.getState())
-                .city(requestedLocation.getCity())
-                .country(requestedLocation.getCountry())
-                .build();
-//        Location location = mapper.map(request.getLocation(), Location.class);
-
-        log.info("4");
-        location.setCompany(foundCompany);
-
-        log.info("5");
         Location savedLocation = locationService.save(location);
         foundCompany.setLocation(savedLocation);
-        log.info("6");
-        repository.save(foundCompany);
-        log.info("7");
 
+        repository.save(foundCompany);
         GenericResponse<String> genericResponse = GenericResponse.<String>builder()
                 .status(HTTP_STATUS_OK)
                 .message(COMPANY_DETAILS_UPDATED_SUCCESSFULLY)
                 .build();
-        log.info("8");
         return ResponseEntity.ok().body(genericResponse);
     }
 

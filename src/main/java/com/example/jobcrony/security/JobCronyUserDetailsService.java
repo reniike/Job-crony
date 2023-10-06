@@ -17,7 +17,7 @@ public class JobCronyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException(
-                String.format(USER_WITH_EMAIL_NOT_FOUND, email)
+                String.format(USER_WITH_EMAIL_NOT_FOUND)
         ));
         return new JobCronyUserDetails(user);
     }

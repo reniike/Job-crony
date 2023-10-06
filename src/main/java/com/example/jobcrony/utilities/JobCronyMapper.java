@@ -1,9 +1,7 @@
 package com.example.jobcrony.utilities;
 
 import com.example.jobcrony.data.models.*;
-import com.example.jobcrony.dtos.requests.ApplicationRequest;
-import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
-import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
+import com.example.jobcrony.dtos.requests.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -48,5 +46,25 @@ public class JobCronyMapper {
                 .coverLetter(request.getCoverLetter())
                 .applicationStatus(ApplicationStatus.PENDING)
                 .build();
+    }
+
+    public void map(Company foundCompany, UpdateCompanyDetailRequest request) {
+        foundCompany.setCompanyDescription(request.getCompanyDescription());
+        foundCompany.setCompanyName(request.getCompanyName());
+        foundCompany.setCompanyLogo(request.getCompanyLogo());
+        foundCompany.setCompanyIndustry(request.getIndustry());
+        foundCompany.setContactNumber(request.getContactNumber());
+        foundCompany.setNumberOfEmployees(request.getNumberOfEmployees());
+        foundCompany.setCompanyWebsiteUrl(request.getWebsite());
+    }
+
+
+    public void map(LocationRequest requestLocation, Company foundCompany) {
+        Location location = foundCompany.getLocation();
+        location.setCity(requestLocation.getCity());
+        location.setCountry(requestLocation.getCountry());
+        location.setPostalCode(requestLocation.getPostalCode());
+        location.setState(requestLocation.getState());
+        location.setCompany(foundCompany);
     }
 }
