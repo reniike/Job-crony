@@ -41,6 +41,7 @@ public class JobOpeningServiceImpl implements JobOpeningService{
                 .experienceLevel(request.getExperienceLevel())
                 .yearsOfExperience(request.getYearsOfExperience())
                 .requiredSkills(request.getRequiredSkills())
+                .isVerified(false)
                 .build();
 
         List<Skill> skills = skillService.saveSkills(request.getRequiredSkills());
@@ -59,6 +60,17 @@ public class JobOpeningServiceImpl implements JobOpeningService{
     @Override
     public JobOpening findJobOpening(Long jobOpeningId) {
         return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
+    }
+
+    @Override
+    public GenericResponse<String> verifyJobOpening(Long jobOpeningId) {
+        JobOpening jobOpening = findJobOpening(jobOpeningId);
+        jobOpening.setVerified(true);
+        repository.save(jobOpening);
+        return GenericResponse.<String>builder()
+                .message(JOB_OPENING_VERIFIED)
+                .status(HTTP_STATUS_OK)
+                .build();
     }
 
 }
