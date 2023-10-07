@@ -12,10 +12,12 @@ import com.example.jobcrony.dtos.requests.UpdateCompanyDetailRequest;
 import com.example.jobcrony.dtos.responses.CompanyRegistrationResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.*;
+import com.example.jobcrony.security.AuthenticationService;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.employerService.EmployerService;
 import com.example.jobcrony.services.locationService.LocationService;
 import com.example.jobcrony.services.mailService.MailService;
+import com.example.jobcrony.utilities.AuthenticationUtils;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.MailUtility;
 import jakarta.validation.constraints.NotNull;
@@ -41,6 +43,7 @@ public class CompanyServiceImpl implements CompanyService{
     private JobCronyMapper cronyMapper;
     private MailUtility mailUtility;
     private LocationService locationService;
+    private final AuthenticationUtils authUtils;
 
     @Override
     public Company createCompany(CompanyRegistrationRequest request) throws SendMailException, CompanyExistsException {
@@ -84,13 +87,7 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> updateCompanyDetails(UpdateCompanyDetailRequest request) throws CompanyNotFoundException, UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
-        Employer employer = (Employer) userDetails.getUser();
+        Employer employer = (Employer) authUtils.getCurrentUser();
 
         Company foundCompany = findByCompanyCode(employer.getCompany().getCompanyCode());
         cronyMapper.map(foundCompany, request);

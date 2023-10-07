@@ -10,6 +10,8 @@ import com.example.jobcrony.exceptions.EventDoesntExistException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.locationService.LocationService;
+import com.example.jobcrony.utilities.AuthenticationUtils;
+import com.example.jobcrony.utilities.JobCronyMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +24,15 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 @Service
 @AllArgsConstructor
 public class EventServiceImpl implements EventService{
-    private EventRepository eventRepository;
-    private LocationService locationService;
-    private ModelMapper modelMapper;
+    private final EventRepository eventRepository;
+    private final LocationService locationService;
+    private final ModelMapper modelMapper;
+    private final AuthenticationUtils authUtils;
+    private final JobCronyMapper mapper;
 
     @Override
     public ResponseEntity<GenericResponse<String>> createEvent(EventCreationRequest request) throws UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
+        if (!authUtils.isRole(Role.EMPLOYER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         Event event = modelMapper.map(request, Event.class);
 
         Location location = Location.builder()

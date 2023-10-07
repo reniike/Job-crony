@@ -2,7 +2,9 @@ package com.example.jobcrony.utilities;
 
 import com.example.jobcrony.data.models.*;
 import com.example.jobcrony.dtos.requests.*;
+import com.example.jobcrony.security.JobCronyUserDetails;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -67,4 +69,18 @@ public class JobCronyMapper {
         location.setState(requestLocation.getState());
         location.setCompany(foundCompany);
     }
+
+    public JobOpening map(Employer employer, JobOpeningRequest request) {
+        return  JobOpening.builder()
+                .employer(employer)
+                .jobStyle(request.getJobStyle())
+                .jobDescription(request.getJobDescription())
+                .jobTitle(request.getJobTitle())
+                .experienceLevel(request.getExperienceLevel())
+                .yearsOfExperience(request.getYearsOfExperience())
+                .requiredSkills(request.getRequiredSkills())
+                .isVerified(false)
+                .build();
+    }
+
 }

@@ -15,6 +15,7 @@ import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.mailService.MailService;
 import com.example.jobcrony.utilities.JwtUtility;
+import com.example.jobcrony.utilities.MailUtility;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class AdminServiceImpl implements AdminService{
     private AdminInvitation adminInvitation;
     private AdminInvitationRepo invitationRepo;
     private ModelMapper modelMapper;
-    private MailService mailService;
+    private MailUtility mailUtility;
     private JwtUtility jwtUtility;
     private PasswordEncoder passwordEncoder;
 
@@ -44,7 +45,9 @@ public class AdminServiceImpl implements AdminService{
         validateToken(request.getEmail(),request.getToken());
         Admin admin = modelMapper.map(request, Admin.class);
         admin.setPassword(passwordEncoder.encode(request.getPassword()));
+
         adminRepository.save(admin);
+
         JobCronyUserDetails userDetails = new JobCronyUserDetails(admin);
         String token = jwtUtility.generateToken(admin.getRoles(), userDetails);
         return ResponseEntity.ok().body(GenericResponse.<String>builder()
@@ -64,23 +67,14 @@ public class AdminServiceImpl implements AdminService{
         String token = jwtUtility.generateToken(invitationRequest.getEmail());
         adminInvitation.setEmail(invitationRequest.getEmail());
         adminInvitation.setToken(token);
+
         invitationRepo.save(adminInvitation);
-        String text = ADMIN_REGISTRATION_URL + token;
-        sendMail(invitationRequest.getEmail(), text);
+        String activationLink = ADMIN_REGISTRATION_URL + token;
+        mailUtility.sendAdminInvitationMail(invitationRequest.getEmail(), activationLink);
         GenericResponse<String> genericResponse = GenericResponse.<String>builder()
                 .message(EMAIL_SENT_SUCCESSFULLY)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
-    }
-
-    private void sendMail(String email, String text) throws SendMailException {
-        SendMailRequest sendMailRequest = SendMailRequest.builder()
-                .subject(ADMIN_INVITATION_LINK)
-                .from(SYSTEM_MAIL)
-                .text(text)
-                .to(email)
-                .build();
-        mailService.sendMail(sendMailRequest);
     }
 
     private void validateEmail(String email) throws AdminExistException {

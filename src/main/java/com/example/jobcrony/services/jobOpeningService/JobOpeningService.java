@@ -10,6 +10,6 @@ import org.springframework.http.ResponseEntity;
 public interface JobOpeningService {
     ResponseEntity<GenericResponse<String>> postJobOpening(JobOpeningRequest request) throws UserNotAuthorizedException;
     JobOpening findJobOpening(Long jobOpeningId);
-    GenericResponse<String> verifyJobOpening(Long jobOpeningId);
+    GenericResponse<String> verifyJobOpening(Long jobOpeningId) throws UserNotAuthorizedException;
 
 }

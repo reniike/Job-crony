@@ -20,7 +20,5 @@ public interface ApplicationService {
     ResponseEntity<GenericResponse<String>>  rejectApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException;
     List<Application> getAllApplications(Long jobOpeningId);
     List<Application> saveApplications(List<Application> applications);
-
-
 }
 

@@ -1,17 +1,18 @@
 package com.example.jobcrony.services.jobOpeningService;
 
-import com.example.jobcrony.data.models.*;
+import com.example.jobcrony.data.models.Employer;
+import com.example.jobcrony.data.models.JobOpening;
+import com.example.jobcrony.data.models.Role;
+import com.example.jobcrony.data.models.Skill;
 import com.example.jobcrony.data.repositories.JobOpeningRepository;
 import com.example.jobcrony.dtos.requests.JobOpeningRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
-import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.skillService.SkillService;
-import com.example.jobcrony.utilities.AppUtils;
+import com.example.jobcrony.utilities.AuthenticationUtils;
+import com.example.jobcrony.utilities.JobCronyMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -24,25 +25,14 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 public class JobOpeningServiceImpl implements JobOpeningService{
     private final JobOpeningRepository repository;
     private final SkillService skillService;
+    private final JobCronyMapper mapper;
+    private final AuthenticationUtils authUtils;
 
     @Override
     public ResponseEntity<GenericResponse<String>> postJobOpening(JobOpeningRequest request) throws UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
+        Employer employer = (Employer) authUtils.getCurrentUser();
 
-        JobOpening jobOpening = JobOpening.builder()
-                .employer((Employer) userDetails.getUser())
-                .jobStyle(request.getJobStyle())
-                .jobDescription(request.getJobDescription())
-                .jobTitle(request.getJobTitle())
-                .experienceLevel(request.getExperienceLevel())
-                .yearsOfExperience(request.getYearsOfExperience())
-                .requiredSkills(request.getRequiredSkills())
-                .isVerified(false)
-                .build();
+        JobOpening jobOpening = mapper.map(employer, request);
 
         List<Skill> skills = skillService.saveSkills(request.getRequiredSkills());
 
@@ -59,11 +49,12 @@ public class JobOpeningServiceImpl implements JobOpeningService{
 
     @Override
     public JobOpening findJobOpening(Long jobOpeningId) {
-        return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(AppUtils.NOT_FOUND));
+        return repository.findById(jobOpeningId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
-    public GenericResponse<String> verifyJobOpening(Long jobOpeningId) {
+    public GenericResponse<String> verifyJobOpening(Long jobOpeningId) throws UserNotAuthorizedException {
+        if (!authUtils.isRole(Role.ADMIN)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         JobOpening jobOpening = findJobOpening(jobOpeningId);
         jobOpening.setVerified(true);
         repository.save(jobOpening);

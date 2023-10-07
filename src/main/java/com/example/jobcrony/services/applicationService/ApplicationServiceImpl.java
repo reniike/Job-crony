@@ -7,14 +7,12 @@ import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.ApplicationAlreadyExistsException;
 import com.example.jobcrony.exceptions.SendMailException;
 import com.example.jobcrony.exceptions.UserNotAuthorizedException;
-import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.jobOpeningService.JobOpeningService;
+import com.example.jobcrony.utilities.AuthenticationUtils;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.MailUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -29,19 +27,12 @@ public class ApplicationServiceImpl implements ApplicationService{
     private final JobOpeningService jobOpeningService;
     private final JobCronyMapper mapper;
     private final MailUtility mailUtility;
-
+    private final AuthenticationUtils authUtils;
 
     @Override
     public ResponseEntity<GenericResponse<String>> initiateJobApplication(ApplicationRequest request) throws UserNotAuthorizedException, ApplicationAlreadyExistsException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.JOB_SEEKER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
-
         JobOpening jobOpening = jobOpeningService.findJobOpening(request.getJobOpeningId());
-        JobSeeker jobSeeker = (JobSeeker) userDetails.getUser();
+        JobSeeker jobSeeker = (JobSeeker) authUtils.getCurrentUser();
 
         validateDuplicateApplication(jobOpening.getId(), jobSeeker.getId());
         Application application = mapper.map(request, jobOpening, jobSeeker);
@@ -62,12 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> withdrawApplication(Long applicationId) throws UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.JOB_SEEKER)){
-             throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
+        if (!authUtils.isRole(Role.JOB_SEEKER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         repository.delete(foundApplication);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().message(WITHDRAWN_SUCCESSFULLY).status(HTTP_STATUS_OK).build());
@@ -75,12 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> reviewApplication(Long applicationId) throws UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
+        if (!authUtils.isRole(Role.EMPLOYER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.REVIEWED);
         repository.save(foundApplication);
@@ -89,18 +70,11 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> acceptApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
-
+        if (!authUtils.isRole(Role.EMPLOYER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         Application foundApplication = repository.findById(applicationId).orElseThrow(()  -> new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.ACCEPTED);
 
         Application savedApplication = repository.save(foundApplication);
-
         mailUtility.sendJobSeekerInterviewMail(savedApplication);
 
         return ResponseEntity.ok().body(GenericResponse.<String>builder().status(HTTP_STATUS_OK).build());
@@ -108,12 +82,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public ResponseEntity<GenericResponse<String>> rejectApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JobCronyUserDetails userDetails = (JobCronyUserDetails) authentication.getPrincipal();
-
-        if (!userDetails.getUser().getRoles().contains(Role.EMPLOYER)){
-            throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
-        }
+        if (!authUtils.isRole(Role.EMPLOYER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
         Application foundApplication  = repository.findById(applicationId).orElseThrow(() ->new NotFoundException(NOT_FOUND));
         foundApplication.setApplicationStatus(ApplicationStatus.REJECTED);
 

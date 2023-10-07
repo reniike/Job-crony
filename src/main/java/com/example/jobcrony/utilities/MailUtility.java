@@ -111,4 +111,19 @@ public class MailUtility {
 
         mailService.sendMail(sendMailRequest);
     }
+
+    public void sendAdminInvitationMail(String email, String activationLink) throws SendMailException {
+        Context context = new Context();
+        context.setVariables(Map.of("activationLink", activationLink));
+
+        String mailContent = templateEngine.process("admin_invitation_email", context);
+
+        SendMailRequest sendMailRequest = SendMailRequest.builder()
+                .subject(ADMIN_INVITATION_LINK)
+                .from(SYSTEM_MAIL)
+                .text(mailContent)
+                .to(email)
+                .build();
+        mailService.sendMail(sendMailRequest);
+    }
 }
