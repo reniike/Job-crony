@@ -3,20 +3,21 @@ package com.example.jobcrony.services.jobSeekerService;
 import com.example.jobcrony.data.models.JobSeeker;
 import com.example.jobcrony.data.models.JobSeekerPreRegistration;
 import com.example.jobcrony.data.models.Location;
+import com.example.jobcrony.data.models.Role;
 import com.example.jobcrony.data.repositories.JobSeekerRepository;
 import com.example.jobcrony.data.repositories.PreRegistrationRepository;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
+import com.example.jobcrony.dtos.requests.LocationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
+import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.CompanyNotFoundException;
-import com.example.jobcrony.exceptions.SendMailException;
-import com.example.jobcrony.exceptions.UserAlreadyExistException;
-import com.example.jobcrony.exceptions.VerificationFailedException;
+import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.educationService.EducationService;
 import com.example.jobcrony.services.experienceService.ExperienceService;
 import com.example.jobcrony.services.locationService.LocationService;
 import com.example.jobcrony.services.tokenService.TokenService;
+import com.example.jobcrony.utilities.AuthenticationUtils;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.JwtUtility;
 import com.example.jobcrony.utilities.MailUtility;
@@ -26,6 +27,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
 
@@ -36,9 +38,10 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     private ModelMapper modelMapper;
     private final PreRegistrationRepository preRegistrationRepository;
     private final JobSeekerRepository jobSeekerRepository;
-    private EducationService educationService;
-    private ExperienceService experienceService;
+    private final EducationService educationService;
+    private final ExperienceService experienceService;
     private MailUtility mailUtility;
+    private AuthenticationUtils authUtils;
     private JwtUtility jwtUtility;
     private LocationService locationService;
     private JobSeekerValidation validation;
@@ -89,6 +92,30 @@ public class JobSeekerServiceImpl implements JobSeekerService {
                 .data(jwtToken)
                 .status(HTTP_STATUS_OK)
                 .message(ACCOUNT_SUCCESSFULLY_CREATED)
+                .build();
+        return ResponseEntity.ok().body(genericResponse);
+    }
+
+    @Override
+    public ResponseEntity<GenericResponse<String>> updateProfile(UpdateProfileRequest request) throws UserNotAuthorizedException {
+        if (!authUtils.isRole(Role.JOB_SEEKER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+
+        JobSeeker foundJobSeeker = jobSeekerRepository.findJobSeekerByEmail(request.getEmail()).orElseThrow(() -> new NotFoundException(NOT_FOUND));
+        foundJobSeeker.setFirstName(request.getFirstName());
+        foundJobSeeker.setLastName(request.getLastName());
+        foundJobSeeker.setPhoneNumber(request.getPhoneNumber());
+        foundJobSeeker.setResume(request.getResume());
+        foundJobSeeker.setProfilePicture(request.getProfilePicture());
+        foundJobSeeker.setSkills(request.getSkills());
+
+        Location location = mapper.map(foundJobSeeker, request.getLocation());
+        locationService.save(location);
+        experienceService.save(request.getExperienceList(), foundJobSeeker);
+        educationService.save(request.getEducationList(), foundJobSeeker);
+
+        GenericResponse<String> genericResponse = GenericResponse.<String>builder()
+                .status(HTTP_STATUS_OK)
+                .message(PROFILE_UPDATED_SUCCESSFULLY)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
     }

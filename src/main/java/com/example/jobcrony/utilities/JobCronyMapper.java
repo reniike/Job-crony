@@ -83,4 +83,13 @@ public class JobCronyMapper {
                 .build();
     }
 
+    public Location map(JobSeeker jobSeeker, LocationRequest requestLocation) {
+        Location location = jobSeeker.getLocation();
+        location.setState(requestLocation.getState());
+        location.setCity(requestLocation.getCity());
+        location.setCountry(requestLocation.getCountry());
+        location.setPostalCode(requestLocation.getPostalCode());
+        location.setUser(jobSeeker);
+        return location;
+    }
 }
