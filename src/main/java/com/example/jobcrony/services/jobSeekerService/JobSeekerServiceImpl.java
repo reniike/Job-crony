@@ -7,7 +7,6 @@ import com.example.jobcrony.data.models.Role;
 import com.example.jobcrony.data.repositories.JobSeekerRepository;
 import com.example.jobcrony.data.repositories.PreRegistrationRepository;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
-import com.example.jobcrony.dtos.requests.LocationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;

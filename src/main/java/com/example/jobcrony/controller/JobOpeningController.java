@@ -9,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/job/")
+@RequestMapping("/api/v1/job")
 @AllArgsConstructor
 public class JobOpeningController {
     private JobOpeningService jobOpeningService;
 
-    @PostMapping("postJobOpening")
+    @PostMapping("/postJobOpening")
     private ResponseEntity<GenericResponse<String>> postJobOpening(@RequestBody JobOpeningRequest request) throws UserNotAuthorizedException {
         return jobOpeningService.postJobOpening(request);
     }

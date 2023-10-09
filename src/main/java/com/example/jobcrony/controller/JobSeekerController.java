@@ -2,19 +2,14 @@ package com.example.jobcrony.controller;
 
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
+import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.CompanyNotFoundException;
-import com.example.jobcrony.exceptions.SendMailException;
-import com.example.jobcrony.exceptions.UserAlreadyExistException;
-import com.example.jobcrony.exceptions.VerificationFailedException;
+import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.services.jobSeekerService.JobSeekerService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -30,5 +25,10 @@ public class JobSeekerController {
     @PostMapping("/completeRegistration")
     public ResponseEntity<GenericResponse<String>> completeRegistration(@RequestBody JobSeekerRegistrationRequest jobSeekerRegistrationRequest) throws VerificationFailedException {
         return jobSeekerService.completeRegistration(jobSeekerRegistrationRequest);
+    }
+
+    @PutMapping("/updateProfileDetails")
+    public ResponseEntity<GenericResponse<String>> updateProfile(@RequestBody UpdateProfileRequest request) throws UserNotAuthorizedException {
+        return jobSeekerService.updateProfile(request);
     }
 }
