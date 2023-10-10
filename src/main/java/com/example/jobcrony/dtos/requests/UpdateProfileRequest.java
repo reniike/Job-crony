@@ -20,9 +20,6 @@ public class UpdateProfileRequest {
     private String lastName;
 
     @NotBlank
-    private String email;
-
-    @NotBlank
     private String phoneNumber;
 
     private String profilePicture;
