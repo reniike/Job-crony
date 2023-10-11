@@ -1,8 +1,9 @@
 package com.example.jobcrony.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
+
 
 import java.time.LocalDateTime;
 
@@ -17,9 +18,11 @@ public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne
     @JsonIgnore
     private User user;
+
     private String schoolName;
     private String degreeName;
     private String fieldOfStudy;

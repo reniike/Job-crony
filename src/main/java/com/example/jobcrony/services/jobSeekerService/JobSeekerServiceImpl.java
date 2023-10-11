@@ -50,7 +50,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     private SkillService skillService;
 
 
-
     @Override
     public ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest request) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException {
         tokenService.deletePreviousTokens(request.getEmailAddress());
@@ -122,6 +121,12 @@ public class JobSeekerServiceImpl implements JobSeekerService {
                 .message(PROFILE_UPDATED_SUCCESSFULLY)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
+    }
+
+    @Override
+    public JobSeeker getJobSeekerById(Long id) throws UserNotAuthorizedException {
+        if (!authUtils.isRole(Role.EMPLOYER)) throw new UserNotAuthorizedException(USER_NOT_AUTHORIZED);
+        return jobSeekerRepository.findJobSeekerById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {

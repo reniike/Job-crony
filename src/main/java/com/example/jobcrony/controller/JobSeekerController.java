@@ -1,11 +1,13 @@
 package com.example.jobcrony.controller;
 
+import com.example.jobcrony.data.models.JobSeeker;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.services.jobSeekerService.JobSeekerService;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +32,10 @@ public class JobSeekerController {
     @PutMapping("/updateProfileDetails")
     public ResponseEntity<GenericResponse<String>> updateProfile(@RequestBody UpdateProfileRequest request) throws UserNotAuthorizedException {
         return jobSeekerService.updateProfile(request);
+    }
+
+    @GetMapping("/getJobSeeker/{id}")
+    public ResponseEntity<JobSeeker> getJobSeeker(@PathVariable Long id){
+        return ResponseEntity.ok().body(jobSeekerService.getJobSeekerById(id));
     }
 }

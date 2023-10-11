@@ -1,5 +1,6 @@
 package com.example.jobcrony.services.jobSeekerService;
 
+import com.example.jobcrony.data.models.JobSeeker;
 import com.example.jobcrony.dtos.requests.JobSeekerRegistrationRequest;
 import com.example.jobcrony.dtos.requests.PreRegistrationRequest;
 import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
@@ -12,4 +13,6 @@ public interface JobSeekerService {
 
     ResponseEntity<GenericResponse<String>> completeRegistration(JobSeekerRegistrationRequest jobSeekerRegistrationRequest) throws VerificationFailedException;
     ResponseEntity<GenericResponse<String>> updateProfile(UpdateProfileRequest updateProfileRequest) throws UserNotAuthorizedException;
+
+    JobSeeker getJobSeekerById(Long id) throws UserNotAuthorizedException;
 }

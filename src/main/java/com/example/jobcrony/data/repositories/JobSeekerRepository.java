@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface JobSeekerRepository extends JpaRepository<JobSeeker, Long> {
     Optional<JobSeeker> findJobSeekerByEmail(String email);
 
+    Optional<JobSeeker> findJobSeekerById(Long id);
+
 }

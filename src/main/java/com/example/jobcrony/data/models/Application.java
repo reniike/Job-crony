@@ -1,5 +1,6 @@
 package com.example.jobcrony.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.w3c.dom.stylesheets.LinkStyle;
@@ -19,6 +20,7 @@ public class Application {
     private Long id;
 
     @OneToOne
+    @JsonIgnore
     private JobSeeker jobSeeker;
 
     @ManyToOne
