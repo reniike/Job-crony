@@ -35,7 +35,12 @@ public class JobSeekerController {
     }
 
     @GetMapping("/getJobSeeker/{id}")
-    public ResponseEntity<JobSeeker> getJobSeeker(@PathVariable Long id){
+    public ResponseEntity<JobSeeker> getJobSeeker(@PathVariable Long id) throws UserNotAuthorizedException {
         return ResponseEntity.ok().body(jobSeekerService.getJobSeekerById(id));
+    }
+
+    @GetMapping("/getJobSeeker")
+    public ResponseEntity<JobSeeker> getJobSeeker(){
+        return ResponseEntity.ok().body(jobSeekerService.getJobSeeker());
     }
 }

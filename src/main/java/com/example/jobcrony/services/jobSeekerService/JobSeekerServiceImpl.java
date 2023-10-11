@@ -129,6 +129,12 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         return jobSeekerRepository.findJobSeekerById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
+    @Override
+    public JobSeeker getJobSeeker() {
+        JobSeeker jobSeeker = (JobSeeker) authUtils.getCurrentUser();
+        return jobSeekerRepository.findJobSeekerByEmail(jobSeeker.getEmail()).orElseThrow(()-> new NotFoundException(NOT_FOUND));
+    }
+
     private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {
         return preRegistrationRepository.findJobSeekerPreRegistrationByToken(token)
                 .orElseThrow(() -> new VerificationFailedException(VERIFICATION_FAILED));
