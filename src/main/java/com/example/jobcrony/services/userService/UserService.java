@@ -1,11 +1,13 @@
 package com.example.jobcrony.services.userService;
 
-import com.example.jobcrony.dtos.responses.UserResponse;
+import com.example.jobcrony.data.models.User;
+import com.example.jobcrony.dtos.requests.ResetPasswordRequest;
+import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.UserNotFoundException;
+import org.springframework.http.ResponseEntity;
 
 
 public interface UserService {
-   UserResponse findByEmail(String email) throws UserNotFoundException;
-
-
+   User findByEmail(String email) throws UserNotFoundException;
+    ResponseEntity<GenericResponse<String>> resetPassword(ResetPasswordRequest request);
 }
