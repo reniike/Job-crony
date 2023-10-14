@@ -23,6 +23,7 @@ public class User  {
     private String phoneNumber;
     private String email;
     private String password;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)

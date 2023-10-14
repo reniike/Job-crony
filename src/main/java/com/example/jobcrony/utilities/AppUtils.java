@@ -67,6 +67,9 @@ public class AppUtils {
     public static final String COMPANY_DETAILS_UPDATED_SUCCESSFULLY = "Company details updated successfully!";
     public static final String JOB_OPENING_VERIFIED = "Job opening verified successfully!";
     public static final String PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully!";
+    public static final String CURRENT_PASSWORD_IS_INCORRECT = "Current password is incorrect!";
+    public static final String PASSWORD_UPDATED = "Password updated!";
+
 
     public static List<String> getAuthWhiteList(){
         return List.of(
