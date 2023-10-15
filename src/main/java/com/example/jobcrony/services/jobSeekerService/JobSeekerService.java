@@ -8,6 +8,8 @@ import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.*;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 public interface JobSeekerService {
     ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest preRegistrationRequest) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException;
 
@@ -15,4 +17,5 @@ public interface JobSeekerService {
     ResponseEntity<GenericResponse<String>> updateProfile(UpdateProfileRequest updateProfileRequest) throws UserNotAuthorizedException;
     JobSeeker getJobSeekerById(Long id) throws UserNotAuthorizedException;
     JobSeeker getJobSeeker();
+//    JobSeeker findJobSeekerByEmail(String email) throws UserAlreadyExistException;
 }

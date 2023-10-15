@@ -126,4 +126,18 @@ public class MailUtility {
                 .build();
         mailService.sendMail(sendMailRequest);
     }
+
+    public void sendForgotPasswordMail(String email, String resetPasswordLink) throws SendMailException {
+        Context context = new Context();
+        context.setVariables(Map.of("resetPasswordLink", resetPasswordLink));
+
+        String mailContent = templateEngine.process("forgot_password_mail", context);
+        SendMailRequest request = SendMailRequest.builder()
+                .from(SYSTEM_MAIL)
+                .to(email)
+                .text(mailContent)
+                .subject(FORGOT_PASSWORD_FROM_JOB_CRONY)
+                .build();
+        mailService.sendMail(request);
+    }
 }

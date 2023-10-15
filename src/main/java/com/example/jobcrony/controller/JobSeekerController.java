@@ -7,9 +7,7 @@ import com.example.jobcrony.dtos.requests.UpdateProfileRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.services.jobSeekerService.JobSeekerService;
-import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

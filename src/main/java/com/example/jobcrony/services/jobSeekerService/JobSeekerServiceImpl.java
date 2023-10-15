@@ -21,6 +21,7 @@ import com.example.jobcrony.utilities.MailUtility;
 import com.example.jobcrony.utilities.validations.JobSeekerValidation;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class JobSeekerServiceImpl implements JobSeekerService {
     private ModelMapper modelMapper;
     private final PreRegistrationRepository preRegistrationRepository;
@@ -44,7 +46,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     private AuthenticationUtils authUtils;
     private JwtUtility jwtUtility;
     private LocationService locationService;
-    private JobSeekerValidation validation;
     private JobCronyMapper mapper;
     private TokenService tokenService;
     private SkillService skillService;
@@ -52,8 +53,8 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Override
     public ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest request) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException {
+        validateEmail(request.getEmailAddress());
         tokenService.deletePreviousTokens(request.getEmailAddress());
-        validation.validateEmailAddress(request.getEmailAddress());
 
         JobSeekerPreRegistration jobSeekerPreRegistration = new JobSeekerPreRegistration();
         jobSeekerPreRegistration.setEmail(request.getEmailAddress());
@@ -62,14 +63,16 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         jobSeekerPreRegistration.setToken(token);
 
         String magicLink = JOBSEEKER_COMPLETE_REGISTRATION_PAGE_URL + token;
-
         mailUtility.sendJobSeekerWelcomeMail(request.getEmailAddress(), magicLink, SYSTEM_MAIL);
-
         preRegistrationRepository.save(jobSeekerPreRegistration);
 
         GenericResponse<String> genericResponse = new GenericResponse<>();
         genericResponse.setMessage(EMAIL_SENT_SUCCESSFULLY);
         return ResponseEntity.ok().body(genericResponse);
+    }
+
+    private void validateEmail(String emailAddress) throws UserAlreadyExistException {
+        if (jobSeekerRepository.findJobSeekerByEmail(emailAddress).isPresent()) throw new UserAlreadyExistException(USER_ALREADY_EXIST);
     }
 
     @Override
@@ -134,6 +137,13 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         JobSeeker jobSeeker = (JobSeeker) authUtils.getCurrentUser();
         return jobSeekerRepository.findJobSeekerByEmail(jobSeeker.getEmail()).orElseThrow(()-> new NotFoundException(NOT_FOUND));
     }
+
+
+
+//    @Override
+//    public JobSeeker findJobSeekerByEmail(String email) throws UserAlreadyExistException {
+//        return jobSeekerRepository.findJobSeekerByEmail(email).orElseThrow(() -> new UserAlreadyExistException(USER_ALREADY_EXIST));
+//    }
 
     private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {
         return preRegistrationRepository.findJobSeekerPreRegistrationByToken(token)

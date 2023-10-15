@@ -69,6 +69,13 @@ public class AppUtils {
     public static final String PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully!";
     public static final String CURRENT_PASSWORD_IS_INCORRECT = "Current password is incorrect!";
     public static final String PASSWORD_UPDATED = "Password updated!";
+    public static final String FORGOT_PASSWORD_FROM_JOB_CRONY = "Password Recovery for Your Job Crony Account";
+    public static final String RESET_PASSWORD_URL = "/api/v1/job-crony-user/resetPassword" ;
+    public static final String FORGOT_PASSWORD_EMAIL_SENT = "Forgot password email sent!";
+    public static final String PASSWORD_RESET_SUCCESSFUL = "Password reset successful";
+    public static final String INVALID_TOKEN = "Invalid token" ;
+    public static final String FORGOT_PASSWORD_URL = "/api/v1/job-crony-user/forgotPassword";
+    public static final String UPDATE_PASSWORD_URL = "/api/v1/job-crony-user/updatePassword";
 
 
     public static List<String> getAuthWhiteList(){

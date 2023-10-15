@@ -15,8 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -48,6 +47,8 @@ public class SecurityConfig{
                 .authorizeHttpRequests(c -> c.requestMatchers(POST,  EMPLOYER_REGISTRATION_URL )
                         .permitAll())
                 .authorizeHttpRequests(c -> c.requestMatchers(POST, CREATE_EVENT_URL )
+                        .permitAll())
+                .authorizeHttpRequests(c -> c.requestMatchers(PUT, FORGOT_PASSWORD_URL)
                         .permitAll())
                 .authorizeHttpRequests(c -> c.requestMatchers( "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll())
                 .authorizeHttpRequests(c->c.anyRequest().authenticated())

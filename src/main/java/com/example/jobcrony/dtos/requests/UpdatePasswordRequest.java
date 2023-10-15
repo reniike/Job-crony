@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResetPasswordRequest {
-    private String token;
+public class UpdatePasswordRequest {
+    private String currentPassword;
     private String newPassword;
 }
