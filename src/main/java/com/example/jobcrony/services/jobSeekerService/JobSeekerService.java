@@ -17,5 +17,4 @@ public interface JobSeekerService {
     ResponseEntity<GenericResponse<String>> updateProfile(UpdateProfileRequest updateProfileRequest) throws UserNotAuthorizedException;
     JobSeeker getJobSeekerById(Long id) throws UserNotAuthorizedException;
     JobSeeker getJobSeeker();
-//    JobSeeker findJobSeekerByEmail(String email) throws UserAlreadyExistException;
 }

@@ -18,7 +18,6 @@ import com.example.jobcrony.utilities.AuthenticationUtils;
 import com.example.jobcrony.utilities.JobCronyMapper;
 import com.example.jobcrony.utilities.JwtUtility;
 import com.example.jobcrony.utilities.MailUtility;
-import com.example.jobcrony.utilities.validations.JobSeekerValidation;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -137,13 +136,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         JobSeeker jobSeeker = (JobSeeker) authUtils.getCurrentUser();
         return jobSeekerRepository.findJobSeekerByEmail(jobSeeker.getEmail()).orElseThrow(()-> new NotFoundException(NOT_FOUND));
     }
-
-
-
-//    @Override
-//    public JobSeeker findJobSeekerByEmail(String email) throws UserAlreadyExistException {
-//        return jobSeekerRepository.findJobSeekerByEmail(email).orElseThrow(() -> new UserAlreadyExistException(USER_ALREADY_EXIST));
-//    }
 
     private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {
         return preRegistrationRepository.findJobSeekerPreRegistrationByToken(token)
