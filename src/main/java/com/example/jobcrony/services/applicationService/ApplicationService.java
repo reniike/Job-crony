@@ -1,7 +1,6 @@
 package com.example.jobcrony.services.applicationService;
 
 import com.example.jobcrony.data.models.Application;
-import com.example.jobcrony.data.models.JobOpening;
 import com.example.jobcrony.dtos.requests.ApplicationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.ApplicationAlreadyExistsException;
@@ -20,5 +19,6 @@ public interface ApplicationService {
     ResponseEntity<GenericResponse<String>>  rejectApplication(Long applicationId) throws SendMailException, UserNotAuthorizedException;
     List<Application> getAllApplications(Long jobOpeningId);
     List<Application> saveApplications(List<Application> applications);
+    GenericResponse<?> getApplicationById(Long id);
 }
 

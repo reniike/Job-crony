@@ -51,4 +51,9 @@ public class ApplicationController {
     public ResponseEntity<GenericResponse<String>> rejectApplication(@RequestBody Long applicationId) throws SendMailException, UserNotAuthorizedException {
         return applicationService.rejectApplication(applicationId);
     }
+
+    @PostMapping("/getApplication/{id}")
+    public ResponseEntity<GenericResponse<?>> getApplicationById(@PathVariable Long id){
+        return ResponseEntity.ok().body(applicationService.getApplicationById(id));
+    }
 }

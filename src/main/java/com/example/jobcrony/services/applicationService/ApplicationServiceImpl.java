@@ -101,4 +101,10 @@ public class ApplicationServiceImpl implements ApplicationService{
     public List<Application> saveApplications(List<Application> applications) {
         return repository.saveAll(applications);
     }
+
+    @Override
+    public GenericResponse<?> getApplicationById(Long id) {
+        Application application = repository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND));
+        return GenericResponse.builder().data(application).build();
+    }
 }
