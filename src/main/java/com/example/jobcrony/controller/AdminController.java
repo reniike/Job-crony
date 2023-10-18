@@ -1,5 +1,6 @@
 package com.example.jobcrony.controller;
 
+import com.example.jobcrony.data.models.Admin;
 import com.example.jobcrony.dtos.requests.AdminInvitationRequest;
 import com.example.jobcrony.dtos.requests.AdminRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
@@ -9,10 +10,9 @@ import com.example.jobcrony.exceptions.UserNotFoundException;
 import com.example.jobcrony.services.adminService.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -28,5 +28,10 @@ public class AdminController {
     @PostMapping("/sendInvitationLink")
     public ResponseEntity<GenericResponse<String>> sendLink(@RequestBody AdminInvitationRequest request) throws AdminExistException, SendMailException {
         return adminService.sendInvitationLink(request);
+    }
+
+    @GetMapping("/getAllAdmin")
+    public List<Admin> getAllAdmin(){
+        return adminService.getAllAdmin();
     }
 }

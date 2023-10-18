@@ -18,16 +18,15 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1/job-crony/application")
 public class ApplicationController {
-
     private final ApplicationService applicationService;
 
     @PostMapping("/apply")
     public ResponseEntity<GenericResponse<String>> apply(@RequestBody ApplicationRequest request) throws UserNotFoundException, UserNotAuthorizedException, ApplicationAlreadyExistsException {
-       return applicationService.initiateJobApplication(request);
+        return applicationService.initiateJobApplication(request);
     }
 
     @GetMapping("/getAllApplications")
-    public ResponseEntity<List<Application>> getAllApplication(@RequestBody Long jobOpeningId){
+    public ResponseEntity<List<Application>> getAllApplication(@RequestBody Long jobOpeningId) {
         List<Application> applications = applicationService.getAllApplications(jobOpeningId);
         return ResponseEntity.ok().body(applications);
     }
@@ -53,7 +52,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/getApplication/{id}")
-    public ResponseEntity<GenericResponse<?>> getApplicationById(@PathVariable Long id){
+    public ResponseEntity<GenericResponse<?>> getApplicationById(@PathVariable Long id) {
         return ResponseEntity.ok().body(applicationService.getApplicationById(id));
     }
 }

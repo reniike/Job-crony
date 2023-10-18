@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.example.jobcrony.utilities.AppUtils.*;
 
 @Service
@@ -75,6 +77,11 @@ public class AdminServiceImpl implements AdminService{
                 .message(EMAIL_SENT_SUCCESSFULLY)
                 .build();
         return ResponseEntity.ok().body(genericResponse);
+    }
+
+    @Override
+    public List<Admin> getAllAdmin() {
+        return adminRepository.findAll();
     }
 
     private void validateEmail(String email) throws AdminExistException {
