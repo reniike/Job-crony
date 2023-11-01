@@ -76,5 +76,10 @@ public class UserServiceImpl implements UserService{
         return ResponseEntity.ok().body(genericResponse);
     }
 
+    @Override
+    public GenericResponse<String> deleteAccount() {
+        return null;
+    }
+
 
 }

@@ -26,4 +26,9 @@ public class UserController {
     public ResponseEntity<GenericResponse<String>> forgotPassword(@PathVariable String email) throws UserNotFoundException, SendMailException {
         return userService.forgotPassword(email);
     }
+
+    @DeleteMapping("/deleteAccount")
+    public ResponseEntity<GenericResponse<String>> deleteAccount(){
+        return ResponseEntity.ok().body(userService.deleteAccount());
+    }
 }

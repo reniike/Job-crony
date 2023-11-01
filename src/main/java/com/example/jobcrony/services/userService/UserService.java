@@ -16,4 +16,5 @@ public interface UserService {
     ResponseEntity<GenericResponse<String>> updatePassword(UpdatePasswordRequest request) throws UserNotFoundException, WrongPasswordException;
     ResponseEntity<GenericResponse<String>> forgotPassword(String emailAddress) throws UserNotFoundException, SendMailException;
     ResponseEntity<GenericResponse<String>> resetPassword(ResetPasswordRequest request) throws UserNotFoundException, InvalidTokenException;
+    GenericResponse<String> deleteAccount();
 }
