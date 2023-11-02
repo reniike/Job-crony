@@ -6,10 +6,7 @@ import com.example.jobcrony.data.repositories.UserRepository;
 import com.example.jobcrony.dtos.requests.ResetPasswordRequest;
 import com.example.jobcrony.dtos.requests.UpdatePasswordRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.InvalidTokenException;
-import com.example.jobcrony.exceptions.SendMailException;
-import com.example.jobcrony.exceptions.UserNotFoundException;
-import com.example.jobcrony.exceptions.WrongPasswordException;
+import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.services.tokenService.TokenService;
 import com.example.jobcrony.utilities.AuthenticationUtils;
 import com.example.jobcrony.utilities.JwtUtility;
@@ -77,9 +74,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public GenericResponse<String> deleteAccount() {
-        return null;
+    public GenericResponse<String> deleteAccount(String confirmationKeyword) throws UserNotFoundException, InvalidConfirmationException {
+        if (!DELETE.equalsIgnoreCase(confirmationKeyword)) {
+            throw new InvalidConfirmationException(INVALID_CONFIRMATION_KEYWORD);
+        }
+        User user = authUtils.getCurrentUser();
+        User foundUser = findByEmail(user.getEmail());
+        userRepository.delete(foundUser);
+        return GenericResponse.<String>builder().message(ACCOUNT_SUCCESSFULLY_DELETED).build();
     }
-
-
 }

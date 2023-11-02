@@ -76,6 +76,9 @@ public class AppUtils {
     public static final String INVALID_TOKEN = "Invalid token" ;
     public static final String FORGOT_PASSWORD_URL = "/api/v1/job-crony-user/forgotPassword";
     public static final String UPDATE_PASSWORD_URL = "/api/v1/job-crony-user/updatePassword";
+    public static final String ACCOUNT_SUCCESSFULLY_DELETED = "Account successfully deleted!";
+    public static final String INVALID_CONFIRMATION_KEYWORD = "Invalid confirmation keyword!";
+    public static final String DELETE = "delete";
 
 
     public static List<String> getAuthWhiteList(){
