@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
         User user = authUtils.getCurrentUser();
         User foundUser = findByEmail(user.getEmail());
         if (!passwordEncoder.matches(request.getCurrentPassword(), foundUser.getPassword())) throw new WrongPasswordException(CURRENT_PASSWORD_IS_INCORRECT);
-        foundUser.setPassword(passwordEncoder.encode(request.getCurrentPassword()));
+        foundUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(foundUser);
         return ResponseEntity.ok().body(GenericResponse.<String>builder().message(PASSWORD_UPDATED).status(HTTP_STATUS_OK).build());
     }

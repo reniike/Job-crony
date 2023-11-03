@@ -18,7 +18,6 @@ public class CompanyController {
 
     @PutMapping("/updateCompanyDetails")
     public ResponseEntity<GenericResponse<String>> updateCompanyDetails(@RequestBody UpdateCompanyDetailRequest request) throws CompanyNotFoundException, UserNotAuthorizedException {
-        System.out.println("Received request" + request);
         return companyService.updateCompanyDetails(request);
     }
 }
