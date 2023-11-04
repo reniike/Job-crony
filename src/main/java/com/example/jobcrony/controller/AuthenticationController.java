@@ -20,4 +20,9 @@ public class AuthenticationController {
     public ResponseEntity<GenericResponse<String>> login(@RequestBody AuthenticationRequest authenticationRequest){
         return authenticationService.authenticate(authenticationRequest);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<GenericResponse<String>> logout(){
+        return authenticationService.logout();
+    }
 }

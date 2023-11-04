@@ -41,4 +41,7 @@ public class AuthenticationService {
         }
     }
 
+    public ResponseEntity<GenericResponse<String>> logout() {
+
+    }
 }
