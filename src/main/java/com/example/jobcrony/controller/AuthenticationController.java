@@ -21,8 +21,8 @@ public class AuthenticationController {
         return authenticationService.authenticate(authenticationRequest);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<GenericResponse<String>> logout(){
-        return authenticationService.logout();
-    }
+//    @PostMapping("/logout")
+//    public ResponseEntity<GenericResponse<String>> logout(){
+////        return authenticationService.logout();
+//    }
 }

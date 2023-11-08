@@ -30,8 +30,9 @@
 //    private CompanyRegistrationRequest companyRegistrationRequest;
 //
 //    @DisplayName("Employer registration test")
-//    @Test void  employerRegistrationTest() throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
-//companyRegistrationRequest = CompanyRegistrationRequest.builder()
+//    @Test
+//    void employerRegistrationTest() throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
+//        companyRegistrationRequest = CompanyRegistrationRequest.builder()
 //                .companyDescription("")
 //                .companyLogo("")
 //                .companyName("crony")
@@ -42,8 +43,8 @@
 //                .email("negibis726@gameszox.com")
 //                .location(null)
 //                .build();
-//       ResponseEntity<CompanyRegistrationResponse> companyRegistrationResponse = companyService.registerCompany(companyRegistrationRequest);
-//       assertNotNull(companyRegistrationResponse);
+//        ResponseEntity<CompanyRegistrationResponse> companyRegistrationResponse = companyService.registerCompany(companyRegistrationRequest);
+//        assertNotNull(companyRegistrationResponse);
 //        registrationRequest = EmployerRegistrationRequest.builder()
 //                .company(CompanyRegistrationRequest.builder()
 //                        .companyCode("c1bbtyI1e972xygnC")
