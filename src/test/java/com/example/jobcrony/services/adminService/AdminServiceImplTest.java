@@ -2,7 +2,6 @@ package com.example.jobcrony.services.adminService;
 
 import com.example.jobcrony.data.models.AdminInvitation;
 import com.example.jobcrony.data.repositories.AdminInvitationRepo;
-import com.example.jobcrony.data.repositories.AdminRepository;
 import com.example.jobcrony.dtos.requests.AdminInvitationRequest;
 import com.example.jobcrony.dtos.requests.AdminRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
@@ -13,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
