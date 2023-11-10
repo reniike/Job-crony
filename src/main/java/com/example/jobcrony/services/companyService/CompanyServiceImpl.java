@@ -83,8 +83,8 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company findByEmail(String emailAddress) throws CompanyNotFoundException {
-        return repository.findCompanyByCompanyEmail(emailAddress).get();
+    public Optional<Company> findByEmail(String emailAddress) throws CompanyNotFoundException {
+        return repository.findCompanyByCompanyEmail(emailAddress);
     }
 
     @Override

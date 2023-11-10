@@ -10,6 +10,7 @@ import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.security.JobCronyUserDetails;
 import com.example.jobcrony.services.companyService.CompanyService;
+import com.example.jobcrony.services.jobSeekerService.JobSeekerService;
 import com.example.jobcrony.services.locationService.LocationService;
 import com.example.jobcrony.services.mailService.MailService;
 import com.example.jobcrony.utilities.JobCronyMapper;
@@ -31,6 +32,7 @@ import static com.example.jobcrony.utilities.AppUtils.*;
 public class EmployerServiceImpl implements EmployerService {
     private final EmployerRepository repository;
     private LocationService locationService;
+    private JobSeekerService jobSeekerService;
     private ModelMapper modelMapper;
     private CompanyService companyService;
     private JwtUtility jwtUtility;
@@ -38,7 +40,8 @@ public class EmployerServiceImpl implements EmployerService {
     private JobCronyMapper mapper;
     @Override
     @Transactional
-    public ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
+    public ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException, UserAlreadyExistException {
+        validateEmployer(request.getEmail());
         String code = request.getCompany().getCompanyCode();
         Company company;
         if (code != null){
@@ -47,7 +50,6 @@ public class EmployerServiceImpl implements EmployerService {
         } else {
             company = companyService.createCompany(request.getCompany());
         }
-
         Employer employer = mapper.map(request, company);
         repository.saveAndFlush(employer);
 
@@ -64,6 +66,11 @@ public class EmployerServiceImpl implements EmployerService {
                 .message(ACCOUNT_SUCCESSFULLY_CREATED)
                 .data(token)
                 .build());
+    }
+
+    private void validateEmployer(String email) throws UserAlreadyExistException, CompanyNotFoundException {
+        if (repository.findEmployerByEmail(email).isPresent() || companyService.findByEmail(email).isPresent())
+            throw new UserAlreadyExistException(USER_ALREADY_EXIST);
     }
 
     @Override

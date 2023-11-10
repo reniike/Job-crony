@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface JobSeekerService {
     ResponseEntity<GenericResponse<String>> initiateRegistration(PreRegistrationRequest preRegistrationRequest) throws UserAlreadyExistException, SendMailException, CompanyNotFoundException;
-
     ResponseEntity<GenericResponse<String>> completeRegistration(JobSeekerRegistrationRequest jobSeekerRegistrationRequest) throws VerificationFailedException;
     ResponseEntity<GenericResponse<String>> updateProfile(UpdateProfileRequest updateProfileRequest) throws UserNotAuthorizedException;
     JobSeeker getJobSeekerById(Long id) throws UserNotAuthorizedException;
     JobSeeker getJobSeeker();
+    JobSeeker findJobSeekerByEmail(String email);
 }

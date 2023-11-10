@@ -41,8 +41,4 @@ class CompanyServiceImplTest {
         Company company =  companyService.createCompany(request);
         assertNotNull(company.getId());
     }
-
-    @Test
-    void updateCompanyDetails() {
-    }
 }

@@ -2,10 +2,7 @@ package com.example.jobcrony.controller;
 
 import com.example.jobcrony.dtos.requests.EmployerRegistrationRequest;
 import com.example.jobcrony.dtos.responses.GenericResponse;
-import com.example.jobcrony.exceptions.CompanyExistsException;
-import com.example.jobcrony.exceptions.CompanyNotFoundException;
-import com.example.jobcrony.exceptions.LimitExceededException;
-import com.example.jobcrony.exceptions.SendMailException;
+import com.example.jobcrony.exceptions.*;
 import com.example.jobcrony.services.employerService.EmployerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +18,7 @@ public class EmployerController {
     private EmployerService employerService;
 
     @PostMapping("/register")
-    public ResponseEntity<GenericResponse<String>> register(@RequestBody EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException {
+    public ResponseEntity<GenericResponse<String>> register(@RequestBody EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException, UserAlreadyExistException {
         return employerService.register(request);
     }
 }

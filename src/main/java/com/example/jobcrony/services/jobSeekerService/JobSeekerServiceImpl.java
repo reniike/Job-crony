@@ -28,6 +28,7 @@ import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.jobcrony.utilities.AppUtils.*;
 
@@ -135,6 +136,11 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     public JobSeeker getJobSeeker() {
         JobSeeker jobSeeker = (JobSeeker) authUtils.getCurrentUser();
         return jobSeekerRepository.findJobSeekerByEmail(jobSeeker.getEmail()).orElseThrow(()-> new NotFoundException(NOT_FOUND));
+    }
+
+    @Override
+    public JobSeeker findJobSeekerByEmail(String email) {
+        return jobSeekerRepository.findJobSeekerByEmail(email).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     private JobSeekerPreRegistration validateTokenAndGetPreRegistration(String token) throws VerificationFailedException {

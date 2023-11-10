@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface EmployerRepository extends JpaRepository<Employer, Long> {
     int countEmployersByCompany_Id(Long companyId);
+
+    Optional<Employer> findEmployerByEmail(String email);
 }

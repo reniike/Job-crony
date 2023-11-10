@@ -7,7 +7,7 @@ import com.example.jobcrony.exceptions.*;
 import org.springframework.http.ResponseEntity;
 
 public interface EmployerService {
-    ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException;
+    ResponseEntity<GenericResponse<String>> register(EmployerRegistrationRequest request) throws CompanyNotFoundException, LimitExceededException, CompanyExistsException, SendMailException, UserAlreadyExistException;
     int countEmployersByCompanyId(Long companyId);
     Employer findEmployer(Long employerId) throws UserNotFoundException;
 }
