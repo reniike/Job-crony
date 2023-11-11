@@ -6,7 +6,6 @@ import com.example.jobcrony.data.models.Location;
 import com.example.jobcrony.data.repositories.EventAttendeeRepository;
 import com.example.jobcrony.dtos.requests.EventAttendeeRegistrationRequest;
 import com.example.jobcrony.dtos.requests.SendMailRequest;
-import com.example.jobcrony.dtos.responses.EventAttendeeResponse;
 import com.example.jobcrony.dtos.responses.GenericResponse;
 import com.example.jobcrony.exceptions.EventDoesntExistException;
 import com.example.jobcrony.exceptions.SendMailException;
@@ -18,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -34,9 +34,10 @@ public class EventAttendeeServiceImpl implements EventAttendeeService{
     private final SpringTemplateEngine templateEngine;
 
     @Override
-    public EventAttendeeResponse findByEmail(String email) {
-        return null;
+    public EventAttendee findByEmail(String email) {
+        return attendeeRepository.findEventAttendeeByEmail(email).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
+
     @Override
     public ResponseEntity<GenericResponse<String>> registerEventAttendee(EventAttendeeRegistrationRequest request) throws EventDoesntExistException, SendMailException {
         EventAttendee eventAttendee = modelMapper.map(request, EventAttendee.class);
